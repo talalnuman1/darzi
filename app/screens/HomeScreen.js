@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
+  ScrollView,
 } from 'react-native';
 import React, {useState} from 'react';
 import SearchBar from '../components/SearchBar';
@@ -16,6 +17,7 @@ import {
 } from 'react-native-responsive-screen';
 import CategoryBox from '../components/CategoryBox';
 import ProductCard from '../components/ProductCard';
+import {useNavigation} from '@react-navigation/native';
 
 const tabButtons = [
   {
@@ -48,14 +50,16 @@ const products = [
     price: 2500,
   },
   {
-    id: 1,
+    id: 3,
     title: "Kid's shirt",
     price: 2000,
   },
 ];
 
 export default function HomeScreen() {
+  const navigation = useNavigation();
   const [selectedTab, setSelectedTab] = useState(1); // set the initial selected tab to the first one
+  const [category, setCategory] = useState(); // set the initial selected tab to the first one
   const tabButtonStyle = id =>
     id === selectedTab ? styles.activeTabButton : styles.tabButton;
   const tabTextStyle = id =>
@@ -64,7 +68,9 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Image source={require('../assets/images/woman.png')} />
-      <SearchBar />
+      <View style={{paddingHorizontal: wp(17)}}>
+        <SearchBar />
+      </View>
       {/* Tab Buttons */}
       <View style={styles.tabs}>
         {tabButtons.map(item => (
@@ -76,28 +82,57 @@ export default function HomeScreen() {
           </TouchableOpacity>
         ))}
       </View>
-      <View style={styles.sideImageContainer}>
-        <View style={styles.sideImage}>
-          <Image source={require('../assets/images/woman2.png')} />
+      <ScrollView>
+        <View style={styles.sideImageContainer}>
+          <View style={styles.sideImage}>
+            <Image
+              style={styles.sideImage}
+              source={
+                category
+                  ? categoires[category - 1]?.image
+                  : require('../assets/images/woman2.png')
+              }
+            />
+          </View>
+          {/* <ScrollView>
+            {categoires.map((item, i) => (
+              <CategoryBox item={item} setCategory={setCategory} />
+            ))}
+          </ScrollView> */}
+          <View>
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={categoires}
+              renderItem={({item}) => (
+                <CategoryBox item={item} setCategory={setCategory} />
+              )}
+              keyExtractor={item => item.id}
+            />
+          </View>
         </View>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={categoires}
-          renderItem={({item}) => (
-            <CategoryBox title={item.title} image={item.image} />
-          )}
-          keyExtractor={item => item.id}
-        />
-      </View>
-      <View style={styles.products}>
-        <ProductCard />
-      </View>
+        <View
+          style={{
+            alignItems: 'flex-end',
+            marginTop: hp(2),
+            paddingHorizontal: wp(4),
+          }}>
+          <TouchableOpacity onPress={() => navigation.navigate('Products')}>
+            <Text style={styles.seeMore}>See More</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.products}>
+          {products.map(item => (
+            <ProductCard item={item} />
+          ))}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
+    height: hp(90),
     // backgroundColor: 'red',
     alignItems: 'center',
   },
@@ -128,9 +163,11 @@ const styles = StyleSheet.create({
   },
   tabText: {
     color: colors.darkGrey,
+    fontFamily: 'Poppins-Regular',
   },
   activeTabText: {
     color: colors.white,
+    fontFamily: 'Poppins-Regular',
   },
   sideImageContainer: {
     flexDirection: 'row',
@@ -142,14 +179,19 @@ const styles = StyleSheet.create({
   },
   sideImage: {
     borderRadius: wp(5),
-    paddingVertical: wp(5),
     width: wp(55),
-    paddingHorizontal: wp(5),
     height: hp(35),
     backgroundColor: colors.white,
     marginRight: wp(6),
   },
   products: {
-    marginTop: hp(4),
+    width: '100%',
+    marginTop: hp(2),
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  seeMore: {
+    color: colors.darkGrey,
+    fontFamily: 'Poppins-Regular',
   },
 });

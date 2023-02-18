@@ -39,16 +39,18 @@ const styles = StyleSheet.create({
   input: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: wp(18),
+    // marginHorizontal: wp(18),
+    // width: '100%',
     marginTop: -hp(3.2),
     borderRadius: wp(2.5),
     backgroundColor: 'white',
   },
   textInput: {
     paddingHorizontal: wp(4),
-    fontSize: hp(2.3),
+    fontSize: hp(2.2),
     borderRadius: wp(2.5),
     width: '100%',
     color: colors.darkGrey,
+    fontFamily: 'Poppins-Regular',
   },
 });
