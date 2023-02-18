@@ -6,29 +6,22 @@ import {
 } from 'react-native-responsive-screen';
 import {colors} from '../config/constants';
 
-export default function ProductCard(title, image, price) {
+export default function ProductCard({item}) {
   return (
     <View style={styles.container}>
       <Image
         style={{
           width: '100%',
+          resizeMode: 'cover',
           borderTopLeftRadius: wp(5),
           borderTopRightRadius: wp(5),
         }}
         source={require('../assets/images/side-woman2.png')}
       />
-      <View>
-        <Text style={styles.title}>title</Text>
+      <View style={{padding: wp(1.5)}}>
+        <Text style={styles.title}>{item.title}</Text>
         <View style={styles.bottom}>
-          <View
-            style={{
-              backgroundColor: colors.black,
-              height: hp(2),
-              width: wp(4),
-            }}>
-            <Image source={require('../assets/icons/shopping-cart.png')} />
-          </View>
-          <Text style={styles.pirce}>Rs: 2000</Text>
+          <Text style={styles.pirce}>Rs: {item.price}</Text>
         </View>
       </View>
     </View>
@@ -37,21 +30,23 @@ export default function ProductCard(title, image, price) {
 const styles = StyleSheet.create({
   container: {
     height: hp(20),
-    width: wp(30),
+    width: wp(29),
     backgroundColor: colors.white,
-    borderRadius: wp(5),
+    borderRadius: wp(4),
   },
   title: {
     color: colors.black,
     fontSize: hp(2),
+    fontFamily: 'Poppins-Regular',
   },
   bottom: {
-    // marginTop: hp(1),
+    marginTop: hp(0.6),
     flexDirection: 'row',
     alignItems: 'baseline',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
   },
   pirce: {
     color: colors.darkGrey,
+    fontFamily: 'Poppins-Regular',
   },
 });
