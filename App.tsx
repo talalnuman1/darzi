@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import type { PropsWithChildren } from 'react';
+import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -15,15 +15,14 @@ import {
   View,
 } from 'react-native';
 
-import {
-  Colors,
-} from 'react-native/Libraries/NewAppScreen';
-import HomeScreen from './app/screens/HomeScreen'
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import HomeScreen from './app/screens/HomeScreen';
+import SignUp from './app/screens/SignUp';
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
-function Section({ children, title }: SectionProps): JSX.Element {
+function Section({children, title}: SectionProps): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -58,14 +57,13 @@ function App(): JSX.Element {
 
   return (
     <>
-      <StatusBar
+      {/* <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <HomeScreen />
+      /> */}
+      <SignUp />
     </>
   );
 }
-
 
 export default App;
