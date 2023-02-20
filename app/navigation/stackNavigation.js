@@ -2,6 +2,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import CustomSizeScreen from '../screens/CustomSizeScreen';
 import CheckOutScreen from '../screens/CheckoutScreen';
 import Login from '../screens/Login';
+
 import ProductDetailScreen from '../screens/ProductDetailScreen';
 import ProductsScreen from '../screens/ProductsScreen';
 import SignUp from '../screens/SignUp';
