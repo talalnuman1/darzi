@@ -13,13 +13,17 @@ import {
 } from 'react-native-responsive-screen';
 import {colors} from '../config/constants';
 
-export default function CategoryBox({title, image}) {
+export default function CategoryBox({item, setCategory}) {
   return (
-    <TouchableOpacity style={styles.card}>
-      <ImageBackground source={image} style={styles.image}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => {
+        setCategory(item?.id);
+      }}>
+      <ImageBackground source={item.image} style={styles.image}>
         <View style={styles.overlay}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.title}>{item.title}</Text>
           </View>
         </View>
       </ImageBackground>
@@ -43,19 +47,16 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: hp(5),
+    // height: hp(4),
     backgroundColor: colors.white,
     opacity: 0.7,
   },
   titleContainer: {
-    justifyContent: 'center',
     alignItems: 'center',
-    position: 'absolute',
-    bottom: 10,
-    left: 10,
-    right: 10,
+    marginTop: hp(0.3),
   },
   title: {
     color: colors.black,
+    fontFamily: 'Poppins-Regular',
   },
 });
