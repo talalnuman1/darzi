@@ -1,6 +1,8 @@
 import {createStackNavigator} from '@react-navigation/stack';
+import CartScreen from '../screens/CartScreen';
 import CheckOutScreen from '../screens/CheckoutScreen';
 import Login from '../screens/Login';
+
 import ProductDetailScreen from '../screens/ProductDetailScreen';
 import ProductsScreen from '../screens/ProductsScreen';
 import SignUp from '../screens/SignUp';
@@ -41,6 +43,11 @@ function AppStack() {
         // options={{headerTitleStyle:  center}}
         name="CheckOut"
         component={CheckOutScreen}
+      />
+      <Stack.Screen
+        // options={{headerTitleStyle: center}}
+        name="MyCart"
+        component={CartScreen}
       />
     </Stack.Navigator>
   );

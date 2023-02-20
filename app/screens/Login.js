@@ -52,7 +52,7 @@ export default function Login() {
             <TextInput style={styles.input} keyboardType="visible-password" />
             <TouchableOpacity
               style={styles.btnsignup}
-              onPress={() => navigation.navigate('CheckOut')}>
+              onPress={() => navigation.navigate('Home')}>
               <Text style={styles.signtext}>Login</Text>
             </TouchableOpacity>
           </View>
