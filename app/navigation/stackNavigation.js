@@ -43,8 +43,12 @@ function AppStack() {
         name="CustomSize"
         component={CustomSizeScreen}
         // options={{headerTitleStyle:  center}}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
         name="CheckOut"
         component={CheckOutScreen}
+        // options={{headerTitleStyle:  center}}
       />
     </Stack.Navigator>
   );

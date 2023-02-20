@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, FlatList} from 'react-native';
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AppHeader from '../components/AppHeader';
@@ -9,7 +9,6 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import sizes from '../helpers/sizes.json';
-import {ScrollView} from 'react-native-gesture-handler';
 
 export default function CustomSizeScreen() {
   const navigation = useNavigation();
@@ -20,11 +19,13 @@ export default function CustomSizeScreen() {
         title={'Custom Size'}
         onPressBack={() => navigation.goBack()}
       />
-      <ScrollView style={styles.container}>
-        {sizes.map(item => (
-          <CustomSizeRow item={item} />
-        ))}
-      </ScrollView>
+      <FlatList
+        style={styles.container}
+        showsVerticalScrollIndicator={false}
+        data={sizes}
+        renderItem={({item}) => <CustomSizeRow item={item} />}
+        keyExtractor={item => item.title}
+      />
     </SafeAreaView>
   );
 }
