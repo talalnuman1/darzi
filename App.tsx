@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import type { PropsWithChildren } from 'react';
+import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -16,17 +16,15 @@ import {
 } from 'react-native';
 import 'react-native-gesture-handler';
 
-import { NavigationContainer } from '@react-navigation/native';
-import {
-  Colors,
-} from 'react-native/Libraries/NewAppScreen';
-import HomeScreen from './app/screens/HomeScreen'
-import AppStack from './app/navigation/stackNavigation'
+import {NavigationContainer} from '@react-navigation/native';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import HomeScreen from './app/screens/HomeScreen';
+import AppStack from './app/navigation/stackNavigation';
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
-function Section({ children, title }: SectionProps): JSX.Element {
+function Section({children, title}: SectionProps): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -68,6 +66,5 @@ function App(): JSX.Element {
     </NavigationContainer>
   );
 }
-
 
 export default App;
