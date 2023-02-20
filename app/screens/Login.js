@@ -14,7 +14,7 @@ import {
 } from 'react-native-responsive-screen';
 import {colors} from '../config/constants';
 import {useNavigation} from '@react-navigation/native';
-export default function SignUp() {
+export default function Login() {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -22,24 +22,18 @@ export default function SignUp() {
       <View>
         <View style={styles.left}>
           <TouchableOpacity style={styles.btnsignupblack}>
-            <Text style={styles.whitetext}>Sign up</Text>
+            <Text style={styles.whitetext}>Login</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btnsignupwhite}>
-            <Text style={styles.blacktext}>Login</Text>
+          <TouchableOpacity
+            style={styles.btnsignupwhite}
+            onPress={() => navigation.navigate('SignUp')}>
+            <Text style={styles.blacktext}>Sign up</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.talkBubbleTriangle} />
         <SafeAreaView style={styles.subcontiner}>
           <View>
-            <Text style={styles.textsignup}>Signup</Text>
-            <View style={styles.flexrow}>
-              <Text style={styles.textformtext}>Username</Text>
-              <Image
-                source={require('../assets/icons/user.png')}
-                style={styles.iconstyle}
-              />
-            </View>
-            <TextInput style={styles.input} keyboardType="text" />
+            <Text style={styles.textsignup}>Login</Text>
             <View style={styles.flexrow}>
               <Text style={styles.textformtext}>Email</Text>
               <Image
@@ -56,18 +50,10 @@ export default function SignUp() {
               />
             </View>
             <TextInput style={styles.input} keyboardType="visible-password" />
-            <View style={styles.flexrow}>
-              <Text style={styles.textformtext}>Confrim Password</Text>
-              <Image
-                source={require('../assets/icons/lock.png')}
-                style={styles.iconstyle}
-              />
-            </View>
-            <TextInput style={styles.input} keyboardType="visible-password" />
             <TouchableOpacity
               style={styles.btnsignup}
-              onPress={() => navigation.navigate('Login')}>
-              <Text style={styles.signtext}>Signup</Text>
+              onPress={() => navigation.navigate('CheckOut')}>
+              <Text style={styles.signtext}>Login</Text>
             </TouchableOpacity>
           </View>
         </SafeAreaView>
@@ -101,28 +87,23 @@ const styles = StyleSheet.create({
     width: 0,
     height: 0,
     borderStyle: 'solid',
-    borderLeftWidth: wp(56),
-    borderTopWidth: hp(32),
+    borderLeftWidth: wp(55),
+    borderTopWidth: hp(30),
     borderRightColor: 'transparent',
     borderTopColor: 'black',
     backgroundColor: 'black',
-    borderRadius: wp(55),
-    transform: [{scaleX: 3}, {skewX: '50deg'}, {translateX: -20}],
-    // width: wp(100),
-    // height: hp(60),
-    // borderRadius: 50,
-    // backgroundColor: 'black',
-    // transform: [{scaleX: 2}],
+    borderRadius: wp(53),
+    transform: [{scaleX: 3}, {skewX: '-5deg'}, {translateX: -22}],
   },
   input: {
     height: hp(6),
-    width: wp(48),
+    width: wp(45),
     backgroundColor: '#F2F2F2',
     alignItems: 'center',
     margin: hp(1),
     borderRadius: wp(2),
-    marginBottom: hp(2),
-    marginTop: hp(1),
+    marginBottom: hp(5),
+    marginTop: hp(2),
   },
   subcontiner: {
     backgroundColor: colors.white,
@@ -141,8 +122,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: wp(2),
-    elevation: 8,
-    marginTop: hp(3),
+    elevation: 9,
+    marginTop: hp(14),
   },
   btnsignupblack: {
     backgroundColor: colors.black,
@@ -161,7 +142,7 @@ const styles = StyleSheet.create({
   textsignup: {
     fontSize: hp(4),
     color: colors.black,
-    marginBottom: hp(2),
+    marginBottom: hp(6),
     fontWeight: '600',
   },
   textformtext: {
@@ -174,13 +155,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     right: 0,
-    width: wp(100),
-    height: hp(25),
+    width: wp(98),
+    height: hp(30),
     backgroundColor: colors.black,
     borderTopLeftRadius: wp(53),
-    marginBottom: hp(-17),
+    marginBottom: hp(-18),
     zIndex: -1,
-    transform: [{scaleX: 2}, {skewX: '25deg'}, {translateX: 100}],
+    transform: [{scaleX: 2}, {skewX: '25deg'}, {translateX: 90}],
   },
   flexrow: {
     flexDirection: 'row',
@@ -192,7 +173,7 @@ const styles = StyleSheet.create({
   },
   signtext: {
     color: colors.black,
-    fontWeight: '400',
+    fontWeight: '500',
   },
   left: {
     position: 'absolute',
@@ -215,10 +196,9 @@ const styles = StyleSheet.create({
   topmargin: {
     marginTop: hp(3),
   },
-
   talkBubbleTriangle: {
     position: 'absolute',
-    left: wp(25),
+    left: wp(28),
     top: 10,
     width: 0,
     height: 0,
