@@ -6,7 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import AppHeader from '../components/AppHeader';
 import {
   heightPercentageToDP as hp,
@@ -23,6 +23,11 @@ const sizes = [
 ];
 export default function ProductDetailScreen() {
   const navigation = useNavigation();
+  const [selectedSize, setSelectedSize] = useState();
+  const sizeButtonStyle = id =>
+    id === selectedSize ? styles.sizeContainer : styles.acitveSizeContainer;
+  const sizeTextStyle = id =>
+    id === selectedSize ? styles.activeSize : styles.size;
   return (
     <SafeAreaView>
       <AppHeader
@@ -49,12 +54,16 @@ export default function ProductDetailScreen() {
         <View style={styles.sizeRow}>
           <Text style={styles.size}>Size:</Text>
           {sizes.map((size, i) => (
-            <TouchableOpacity>
-              <Text style={styles.size}>{size.title}</Text>
+            <TouchableOpacity
+              style={sizeButtonStyle(size.id)}
+              onPress={() => setSelectedSize(size.id)}>
+              <Text style={sizeTextStyle(size.id)}>{size.title}</Text>
             </TouchableOpacity>
           ))}
           <Text style={styles.mySize}>My Size</Text>
-          <TouchableOpacity style={styles.addSize}>
+          <TouchableOpacity
+            style={styles.addSize}
+            onPress={() => navigation.navigate('CustomSize')}>
             <Text style={styles.size}>+</Text>
           </TouchableOpacity>
         </View>
@@ -112,6 +121,26 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.black,
     fontFamily: 'Poppins-Regular',
+  },
+  activeSize: {
+    fontSize: 16,
+    color: colors.white,
+    fontFamily: 'Poppins-Regular',
+  },
+  sizeContainer: {
+    backgroundColor: colors.black,
+    borderRadius: wp(10),
+    height: hp(3),
+    width: wp(6),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  acitveSizeContainer: {
+    borderRadius: wp(10),
+    height: hp(3),
+    width: wp(6),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   mySize: {
     fontSize: 16,

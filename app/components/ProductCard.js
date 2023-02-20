@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.black,
-    fontSize: hp(2),
+    fontSize: hp(1.5),
     fontFamily: 'Poppins-Regular',
   },
   bottom: {

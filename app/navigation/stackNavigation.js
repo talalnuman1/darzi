@@ -1,4 +1,5 @@
 import {createStackNavigator} from '@react-navigation/stack';
+import CustomSizeScreen from '../screens/CustomSizeScreen';
 import ProductDetailScreen from '../screens/ProductDetailScreen';
 import ProductsScreen from '../screens/ProductsScreen';
 
@@ -28,6 +29,11 @@ function AppStack() {
         options={{headerShown: false}}
         name="ProductDetails"
         component={ProductDetailScreen}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="CustomSize"
+        component={CustomSizeScreen}
       />
     </Stack.Navigator>
   );
