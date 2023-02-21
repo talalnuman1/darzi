@@ -83,7 +83,7 @@ export default function HomeScreen() {
           </TouchableOpacity>
         ))}
       </View>
-      <ScrollView scrollEnabled={outerScrollEnabled}>
+      <ScrollView>
         <View style={styles.sideImageContainer}>
           <View style={styles.sideImage}>
             <Image
@@ -95,21 +95,7 @@ export default function HomeScreen() {
               }
             />
           </View>
-          <ScrollView
-            // horizontal={true}
-            onPress={() => {
-              setOuterScrollEnabled(false);
-              console.log('first');
-            }}
-            onScrollBeginDrag={() => {
-              setOuterScrollEnabled(true);
-              console.log('234');
-            }}
-            onScrollEndDrag={() => setOuterScrollEnabled(false)}>
-            {categoires.map((item, i) => (
-              <CategoryBox item={item} setCategory={setCategory} key={i} />
-            ))}
-          </ScrollView>
+
           {/* <View>
             <FlatList
               showsVerticalScrollIndicator={false}
@@ -121,11 +107,16 @@ export default function HomeScreen() {
             />
           </View> */}
         </View>
+        <ScrollView horizontal={true} style={{width: wp(90)}}>
+          {categoires.map((item, i) => (
+            <CategoryBox item={item} setCategory={setCategory} key={i} />
+          ))}
+        </ScrollView>
         <View
           style={{
             alignItems: 'flex-end',
             marginTop: hp(2),
-            paddingHorizontal: wp(4),
+            paddingHorizontal: wp(5),
           }}>
           <TouchableOpacity onPress={() => navigation.navigate('Products')}>
             <Text style={styles.seeMore}>See More</Text>
@@ -182,18 +173,17 @@ const styles = StyleSheet.create({
   },
   sideImageContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
     marginTop: hp(2),
     paddingHorizontal: wp(5),
     height: hp(35),
     width: '100%',
   },
   sideImage: {
+    alignSelf: 'center',
     borderRadius: wp(5),
-    width: wp(55),
+    width: '100%',
     height: hp(35),
     backgroundColor: colors.white,
-    marginRight: wp(6),
   },
   products: {
     width: '100%',

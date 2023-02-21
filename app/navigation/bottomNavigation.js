@@ -14,7 +14,7 @@ const TabBarAdvancedButton = ({bgColor, ...props}) => {
   return (
     <View style={styles.container} pointerEvents="box-none">
       <TouchableOpacity style={styles.button} onPress={props.onPress}>
-        <Image source={require('../assets/icons/Filter.png')} />
+        <Image source={require('../assets/icons/filter.png')} />
       </TouchableOpacity>
     </View>
   );

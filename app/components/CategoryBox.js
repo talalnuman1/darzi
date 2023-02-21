@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     width: wp(27),
     height: hp(15),
-    marginVertical: hp(0.7),
+    marginVertical: hp(1),
+    marginHorizontal: hp(1.2),
   },
   image: {
     width: '100%',
