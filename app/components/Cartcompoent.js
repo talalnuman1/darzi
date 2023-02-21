@@ -36,11 +36,11 @@ export default function CartCompotent({item}) {
             <Image source={require('../assets/icons/bag.png')} />
             <View style={styles.center}>
               <TouchableOpacity style={styles.blackbox}>
-                <Text>+</Text>
+                <Text style={styles.white}>+</Text>
               </TouchableOpacity>
               <Text style={styles.counttext}>1</Text>
               <TouchableOpacity style={styles.blackbox}>
-                <Text>-</Text>
+                <Text style={styles.white}>-</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     elevation: 5,
     backgroundColor: colors.white,
-    padding: hp(0.5),
+    padding: hp(0.8),
     width: '90%',
   },
   flexrowrs: {
@@ -78,9 +78,10 @@ const styles = StyleSheet.create({
   },
   blackbox: {
     backgroundColor: colors.black,
-    width: wp(5),
-    height: hp(2.5),
+    width: wp(4),
+    height: hp(3),
     alignItems: 'center',
+    alignSelf: 'center',
     borderRadius: 5,
   },
   counttext: {
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
   },
   center: {
     alignItems: 'center',
-    marginTop: hp(2),
+    marginTop: hp(3),
   },
   flexrowcartbox: {
     flexDirection: 'row',
@@ -105,5 +106,9 @@ const styles = StyleSheet.create({
 
   margintop: {
     marginTop: hp(1),
+  },
+  white: {
+    color: colors.white,
+    textAlign: 'center',
   },
 });

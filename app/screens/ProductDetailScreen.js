@@ -5,6 +5,8 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useState} from 'react';
 import AppHeader from '../components/AppHeader';
@@ -15,6 +17,12 @@ import {
 import {colors} from '../config/constants';
 import {useNavigation} from '@react-navigation/native';
 import SizeModal from '../components/SizeModal';
+// import Carousel from 'react-native-reanimated-carousel';
+import Carousel, {Pagination} from 'react-native-snap-carousel';
+import CarouselCardItem, {
+  SLIDER_WIDTH,
+  ITEM_WIDTH,
+} from '../components/CarouselCardItem';
 
 const sizes = [
   {id: 1, title: 'S'},
@@ -22,7 +30,29 @@ const sizes = [
   {id: 3, title: 'L'},
   {id: 4, title: 'XL'},
 ];
+const data = [
+  {
+    imgUrl:
+      'https://www.pngkey.com/png/detail/367-3671144_men-kurta-kameez-kurta-pajama-new-design.png',
+  },
+  {
+    imgUrl:
+      'https://cdn.shopify.com/s/files/1/0347/0904/5292/files/31_720x_4f606baf-210e-45c8-931e-0319a6d8aa53_480x480.png?v=1618309861',
+  },
+  {
+    imgUrl:
+      'https://cdn.shopify.com/s/files/1/1092/8998/products/WC-262.png?v=1526521237',
+  },
+];
 export default function ProductDetailScreen() {
+  const isCarousel = React.useRef(null);
+  const [index, setIndex] = React.useState(0);
+  const images = [
+    'https://source.unsplash.com/1024x768/?nature',
+    'https://source.unsplash.com/1024x768/?water',
+    'https://source.unsplash.com/1024x768/?tree',
+  ];
+  const width = Dimensions.get('window').width;
   const navigation = useNavigation();
   const [selectedSize, setSelectedSize] = useState();
 
@@ -39,11 +69,61 @@ export default function ProductDetailScreen() {
         onHeartPress={() => console.log('Add to Wishlist')}
       />
       <View style={styles.container}>
-        <View>
-          <Image
+        <View style={styles.centercar}>
+          <Carousel
+            layout="stack"
+            layoutCardOffset={9}
+            ref={isCarousel}
+            data={data}
+            renderItem={CarouselCardItem}
+            sliderWidth={SLIDER_WIDTH}
+            itemWidth={ITEM_WIDTH}
+            inactiveSlideShift={0}
+            useScrollView={true}
+          />
+          <Pagination
+            dotsLength={data.length}
+            activeDotIndex={index}
+            carouselRef={isCarousel}
+            dotStyle={{
+              width: 10,
+              height: 10,
+              borderRadius: 5,
+              marginHorizontal: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.92)',
+            }}
+            inactiveDotOpacity={0.4}
+            inactiveDotScale={0.6}
+            tappableDots={true}
+          />
+          {/* <Image
             style={{height: hp(55), width: '100%'}}
             source={require('../assets/images/woman2.png')}
-          />
+          /> */}
+          {/* <Carousel
+            loop
+            width={width}
+            height={width / 2}
+            autoPlay={true}
+            data={images}
+            scrollAnimationDuration={1000}
+            onSnapToItem={index => console.log('current index:', index)}
+            renderItem={({index}) => (
+              <View
+                style={{
+                  flex: 1,
+                  borderWidth: 1,
+                  justifyContent: 'center',
+                }}>
+                <ActivityIndicator size="small" />
+                <Image
+                  source={{
+                    uri: `https://picsum.photos/800/600?t=${new Date().getTime()}`,
+                  }}
+                />
+              </View>
+            )}
+          /> */}
         </View>
         <View style={styles.titleRow}>
           <Text style={styles.title}>Lorem Ipsum</Text>
@@ -94,6 +174,10 @@ export default function ProductDetailScreen() {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: wp(5),
+  },
+  centercar: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   titleRow: {
     flexDirection: 'row',

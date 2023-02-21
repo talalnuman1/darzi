@@ -54,7 +54,7 @@ export default function CheckOutScreen() {
             <TextInput
               style={styles.input}
               keyboardType="text"
-              placeholder="Ghias Chupa"
+              placeholder="Ghias ALi"
             />
           </View>
           <Text style={styles.nametext}>Card Number</Text>
@@ -63,7 +63,7 @@ export default function CheckOutScreen() {
             <TextInput
               style={styles.input}
               keyboardType="text"
-              placeholder="Ghias Chupa"
+              placeholder="Ghias ALi"
             />
           </View>
           <View style={styles.cvcflexrow}>
@@ -74,7 +74,7 @@ export default function CheckOutScreen() {
                 <TextInput
                   style={styles.input}
                   keyboardType="text"
-                  placeholder="Ghias Chupa"
+                  placeholder="Ghias ALi"
                 />
               </View>
             </View>
@@ -85,7 +85,7 @@ export default function CheckOutScreen() {
                 <TextInput
                   style={styles.input}
                   keyboardType="text"
-                  placeholder="Ghias Chupa"
+                  placeholder="Ghias ALi"
                 />
               </View>
             </View>
@@ -181,5 +181,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: hp(1),
     marginTop: hp(2),
+    alignSelf: 'center',
+    width: '50%',
+    borderRadius: 6,
   },
 });
