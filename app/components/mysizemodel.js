@@ -67,7 +67,9 @@ const MySizeModal = ({modalVisible, setModalVisible}) => {
             <View style={styles.bgflexrwo}>
               <View style={styles.btnflexrow}>
                 <Text style={styles.modalText}>Ghias Ali</Text>
-                <TouchableOpacity style={styles.btnblack}>
+                <TouchableOpacity
+                  style={styles.btnblack}
+                  onPress={() => setModalVisible(false)}>
                   <Text style={styles.modalTextwhite}>Select</Text>
                 </TouchableOpacity>
               </View>

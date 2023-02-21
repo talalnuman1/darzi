@@ -8,7 +8,7 @@ import {
   FlatList,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import SearchBar from '../components/SearchBar';
 import {colors} from '../config/constants';
 import {
@@ -17,7 +17,10 @@ import {
 } from 'react-native-responsive-screen';
 import CategoryBox from '../components/CategoryBox';
 import ProductCard from '../components/ProductCard';
+import {getAllCategories} from '../api/functions';
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
+import {categories} from '../api/api';
 
 const tabButtons = [
   {
@@ -37,6 +40,7 @@ const categoires = [
     image: require('../assets/images/side-woman2.png'),
   },
   {id: 3, title: 'Kameez', image: require('../assets/images/side-woman3.png')},
+  {id: 4, title: 'Coat', image: require('../assets/images/side-woman3.png')},
 ];
 const products = [
   {
@@ -58,13 +62,33 @@ const products = [
 
 export default function HomeScreen() {
   const navigation = useNavigation();
-  const [outerScrollEnabled, setOuterScrollEnabled] = useState(true);
   const [selectedTab, setSelectedTab] = useState(1); // set the initial selected tab to the first one
   const [category, setCategory] = useState(); // set the initial selected tab to the first one
   const tabButtonStyle = id =>
     id === selectedTab ? styles.activeTabButton : styles.tabButton;
   const tabTextStyle = id =>
     id === selectedTab ? styles.activeTabText : styles.tabText;
+  // const getCategories = async () => {
+  //   try {
+  //     // const categoires = await getAllCategories();
+  //     const categoires = await axios.get(
+  //       'https://darzi.testweb.com.pk/api/categorylist',
+  //     );
+  //     console.log(categoires, 'CATEGORIES');
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  const getCategories = async () => {
+    categories('/categorylist', {
+      method: 'Get',
+    })
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err));
+  };
+  useEffect(() => {
+    getCategories();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -98,7 +122,7 @@ export default function HomeScreen() {
         </View>
         <ScrollView
           horizontal={true}
-          style={{width: wp(100), paddingHorizontal: hp(1)}}>
+          style={{width: wp(95), paddingHorizontal: hp(1)}}>
           {categoires.map((item, i) => (
             <CategoryBox item={item} setCategory={setCategory} key={i} />
           ))}
@@ -167,10 +191,11 @@ const styles = StyleSheet.create({
     marginTop: hp(2),
     paddingHorizontal: wp(5),
     height: hp(35),
-    width: '100%',
+    // width: '100%',
   },
   sideImage: {
     alignSelf: 'center',
+    resizeMode: 'contain',
     borderRadius: wp(3),
     width: '100%',
     height: hp(35),

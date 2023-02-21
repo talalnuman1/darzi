@@ -73,6 +73,7 @@ export default function ProductDetailScreen() {
             layoutCardOffset={9}
             ref={isCarousel}
             data={data}
+            onSnapToItem={index => setIndex(index)}
             renderItem={CarouselCardItem}
             sliderWidth={SLIDER_WIDTH}
             itemWidth={ITEM_WIDTH}
@@ -228,7 +229,7 @@ const styles = StyleSheet.create({
   addToCart: {
     position: 'absolute',
     flexDirection: 'row',
-    bottom: -hp(12.1),
+    bottom: -hp(13),
     width: '100%',
     height: hp(10),
     backgroundColor: colors.black,
