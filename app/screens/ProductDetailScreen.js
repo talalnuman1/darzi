@@ -5,8 +5,10 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  Dimensions,
+  ActivityIndicator,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import AppHeader from '../components/AppHeader';
 import {
   heightPercentageToDP as hp,
@@ -14,6 +16,14 @@ import {
 } from 'react-native-responsive-screen';
 import {colors} from '../config/constants';
 import {useNavigation} from '@react-navigation/native';
+import SizeModal from '../components/SizeModal';
+// import Carousel from 'react-native-reanimated-carousel';
+import Carousel, {Pagination} from 'react-native-snap-carousel';
+import CarouselCardItem, {
+  SLIDER_WIDTH,
+  ITEM_WIDTH,
+} from '../components/CarouselCardItem';
+import MySizeModal from '../components/mysizemodel';
 
 const sizes = [
   {id: 1, title: 'S'},
@@ -21,19 +31,71 @@ const sizes = [
   {id: 3, title: 'L'},
   {id: 4, title: 'XL'},
 ];
+const data = [
+  {
+    imgUrl:
+      'https://www.pngkey.com/png/detail/367-3671144_men-kurta-kameez-kurta-pajama-new-design.png',
+  },
+  {
+    imgUrl:
+      'https://cdn.shopify.com/s/files/1/0347/0904/5292/files/31_720x_4f606baf-210e-45c8-931e-0319a6d8aa53_480x480.png?v=1618309861',
+  },
+  {
+    imgUrl:
+      'https://cdn.shopify.com/s/files/1/1092/8998/products/WC-262.png?v=1526521237',
+  },
+];
 export default function ProductDetailScreen() {
+  const isCarousel = React.useRef(null);
+  const [index, setIndex] = React.useState(0);
+
+  const width = Dimensions.get('window').width;
   const navigation = useNavigation();
+  const [selectedSize, setSelectedSize] = useState();
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisibleTwo, setModalVisibleTwo] = useState(false);
+  const sizeButtonStyle = id =>
+    id === selectedSize ? styles.sizeContainer : styles.acitveSizeContainer;
+  const sizeTextStyle = id =>
+    id === selectedSize ? styles.activeSize : styles.size;
   return (
     <SafeAreaView>
       <AppHeader
         title={'Black Shalwar'}
         onPressBack={() => navigation.goBack()}
+        onHeartPress={() => console.log('Add to Wishlist')}
       />
       <View style={styles.container}>
-        <Image
-          style={{height: hp(55), width: '100%'}}
-          source={require('../assets/images/woman.png')}
-        />
+        <View style={styles.centercar}>
+          <Carousel
+            layout="stack"
+            layoutCardOffset={9}
+            ref={isCarousel}
+            data={data}
+            onSnapToItem={index => setIndex(index)}
+            renderItem={CarouselCardItem}
+            sliderWidth={SLIDER_WIDTH}
+            itemWidth={ITEM_WIDTH}
+            inactiveSlideShift={0}
+            useScrollView={true}
+          />
+          <Pagination
+            dotsLength={data.length}
+            activeDotIndex={index}
+            carouselRef={isCarousel}
+            dotStyle={{
+              width: 10,
+              height: 10,
+              borderRadius: 5,
+              marginHorizontal: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.92)',
+            }}
+            inactiveDotOpacity={0.4}
+            inactiveDotScale={0.6}
+            tappableDots={true}
+          />
+        </View>
         <View style={styles.titleRow}>
           <Text style={styles.title}>Lorem Ipsum</Text>
           <View style={styles.ratingContainer}>
@@ -49,12 +111,18 @@ export default function ProductDetailScreen() {
         <View style={styles.sizeRow}>
           <Text style={styles.size}>Size:</Text>
           {sizes.map((size, i) => (
-            <TouchableOpacity>
-              <Text style={styles.size}>{size.title}</Text>
+            <TouchableOpacity
+              style={sizeButtonStyle(size.id)}
+              onPress={() => setSelectedSize(size.id)}>
+              <Text style={sizeTextStyle(size.id)}>{size.title}</Text>
             </TouchableOpacity>
           ))}
-          <Text style={styles.mySize}>My Size</Text>
-          <TouchableOpacity style={styles.addSize}>
+          <TouchableOpacity onPress={() => setModalVisibleTwo(true)}>
+            <Text style={styles.mySize}>My Sizes</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.addSize}
+            onPress={() => navigation.navigate('CustomSize')}>
             <Text style={styles.size}>+</Text>
           </TouchableOpacity>
         </View>
@@ -63,16 +131,28 @@ export default function ProductDetailScreen() {
         <Text style={styles.price}>PKR:3000</Text>
         <TouchableOpacity
           style={styles.addToCartBtn}
-          onPress={() => console.log('Add to Cart')}>
+          onPress={() => setModalVisible(true)}>
           <Text style={styles.addToCartText}>Add to Cart</Text>
         </TouchableOpacity>
       </View>
+      <SizeModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
+      <MySizeModal
+        modalVisible={modalVisibleTwo}
+        setModalVisible={setModalVisibleTwo}
+      />
     </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: wp(5),
+  },
+  centercar: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   titleRow: {
     flexDirection: 'row',
@@ -109,12 +189,32 @@ const styles = StyleSheet.create({
     marginTop: hp(2),
   },
   size: {
-    fontSize: 16,
+    fontSize: 15,
     color: colors.black,
     fontFamily: 'Poppins-Regular',
   },
-  mySize: {
+  activeSize: {
     fontSize: 16,
+    color: colors.white,
+    fontFamily: 'Poppins-Regular',
+  },
+  sizeContainer: {
+    backgroundColor: colors.black,
+    borderRadius: wp(10),
+    height: hp(3),
+    width: wp(6),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  acitveSizeContainer: {
+    borderRadius: wp(10),
+    height: hp(3),
+    width: wp(6),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  mySize: {
+    fontSize: 15,
     color: colors.black,
     fontFamily: 'Poppins-SemiBold',
   },
@@ -129,7 +229,7 @@ const styles = StyleSheet.create({
   addToCart: {
     position: 'absolute',
     flexDirection: 'row',
-    bottom: -hp(12),
+    bottom: -hp(13),
     width: '100%',
     height: hp(10),
     backgroundColor: colors.black,

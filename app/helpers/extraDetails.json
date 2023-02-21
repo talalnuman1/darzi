@@ -1,0 +1,68 @@
+{
+    "collarTypes": [
+        {
+            "id": 1,
+            "title": "Collar"
+        },
+        {
+            "id": 2,
+            "title": "Gole Ban"
+        },
+        {
+            "id": 3,
+            "title": "Choras Ban"
+        }
+    ],
+    "frontPocketTypes": [
+        {
+            "id": 1,
+            "title": "None"
+        },
+        {
+            "id": 2,
+            "title": "Gole"
+        },
+        {
+            "id": 3,
+            "title": "Choras"
+        }
+    ],
+    "sidePocketTypes": [
+        {
+            "id": 1,
+            "title": "Left Side"
+        },
+        {
+            "id": 2,
+            "title": "Right Side"
+        },
+        {
+            "id": 3,
+            "title": "Both Side"
+        }
+    ],
+    "stichTypes": [
+        {
+            "id": 1,
+            "title": "Single"
+        },
+        {
+            "id": 2,
+            "title": "Double"
+        },
+        {
+            "id": 3,
+            "title": "Triple"
+        }
+    ],
+    "tailTypes": [
+        {
+            "id": 1,
+            "title": "Circular"
+        },
+        {
+            "id": 2,
+            "title": "Square"
+        }
+    ]
+}

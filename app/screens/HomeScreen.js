@@ -8,7 +8,7 @@ import {
   FlatList,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import SearchBar from '../components/SearchBar';
 import {colors} from '../config/constants';
 import {
@@ -17,7 +17,10 @@ import {
 } from 'react-native-responsive-screen';
 import CategoryBox from '../components/CategoryBox';
 import ProductCard from '../components/ProductCard';
+import {getAllCategories} from '../api/functions';
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
+import {categories} from '../api/api';
 
 const tabButtons = [
   {
@@ -37,6 +40,7 @@ const categoires = [
     image: require('../assets/images/side-woman2.png'),
   },
   {id: 3, title: 'Kameez', image: require('../assets/images/side-woman3.png')},
+  {id: 4, title: 'Coat', image: require('../assets/images/side-woman3.png')},
 ];
 const products = [
   {
@@ -64,6 +68,27 @@ export default function HomeScreen() {
     id === selectedTab ? styles.activeTabButton : styles.tabButton;
   const tabTextStyle = id =>
     id === selectedTab ? styles.activeTabText : styles.tabText;
+  // const getCategories = async () => {
+  //   try {
+  //     // const categoires = await getAllCategories();
+  //     const categoires = await axios.get(
+  //       'https://darzi.testweb.com.pk/api/categorylist',
+  //     );
+  //     console.log(categoires, 'CATEGORIES');
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  const getCategories = async () => {
+    categories('/categorylist', {
+      method: 'Get',
+    })
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err));
+  };
+  useEffect(() => {
+    getCategories();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -94,27 +119,19 @@ export default function HomeScreen() {
               }
             />
           </View>
-          {/* <ScrollView>
-            {categoires.map((item, i) => (
-              <CategoryBox item={item} setCategory={setCategory} />
-            ))}
-          </ScrollView> */}
-          <View>
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              data={categoires}
-              renderItem={({item}) => (
-                <CategoryBox item={item} setCategory={setCategory} />
-              )}
-              keyExtractor={item => item.id}
-            />
-          </View>
         </View>
+        <ScrollView
+          horizontal={true}
+          style={{width: wp(95), paddingHorizontal: hp(1)}}>
+          {categoires.map((item, i) => (
+            <CategoryBox item={item} setCategory={setCategory} key={i} />
+          ))}
+        </ScrollView>
         <View
           style={{
             alignItems: 'flex-end',
-            marginTop: hp(2),
-            paddingHorizontal: wp(4),
+            marginTop: hp(1),
+            paddingHorizontal: wp(5),
           }}>
           <TouchableOpacity onPress={() => navigation.navigate('Products')}>
             <Text style={styles.seeMore}>See More</Text>
@@ -171,27 +188,27 @@ const styles = StyleSheet.create({
   },
   sideImageContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
     marginTop: hp(2),
     paddingHorizontal: wp(5),
     height: hp(35),
-    width: '100%',
+    // width: '100%',
   },
   sideImage: {
-    borderRadius: wp(5),
-    width: wp(55),
+    alignSelf: 'center',
+    resizeMode: 'contain',
+    borderRadius: wp(3),
+    width: '100%',
     height: hp(35),
     backgroundColor: colors.white,
-    marginRight: wp(6),
   },
   products: {
     width: '100%',
-    marginTop: hp(2),
+    marginTop: hp(1),
     flexDirection: 'row',
     justifyContent: 'space-evenly',
   },
   seeMore: {
     color: colors.darkGrey,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-Bold',
   },
 });

@@ -13,8 +13,8 @@ export default function ProductCard({item}) {
         style={{
           width: '100%',
           resizeMode: 'cover',
-          borderTopLeftRadius: wp(5),
-          borderTopRightRadius: wp(5),
+          borderTopLeftRadius: wp(2),
+          borderTopRightRadius: wp(2),
         }}
         source={require('../assets/images/side-woman2.png')}
       />
@@ -32,11 +32,11 @@ const styles = StyleSheet.create({
     height: hp(20),
     width: wp(29),
     backgroundColor: colors.white,
-    borderRadius: wp(4),
+    borderRadius: wp(2),
   },
   title: {
     color: colors.black,
-    fontSize: hp(2),
+    fontSize: hp(1.5),
     fontFamily: 'Poppins-Regular',
   },
   bottom: {
