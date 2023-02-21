@@ -101,7 +101,7 @@ export default function CheckOutScreen() {
               }}
             />
             <Text style={styles.savetext}>
-              Save my details for futur purchase
+              Save my details for future purchase
             </Text>
           </View>
           <TouchableOpacity style={styles.btnpaynow}>
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   },
   blackview: {
     backgroundColor: colors.black,
-    paddingHorizontal: wp(10),
+    paddingHorizontal: wp(4),
     paddingVertical: wp(5),
   },
   textflexrow: {
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   textcheckout: {
     fontSize: hp(2.5),
     color: colors.white,
-    fontWeight: '500',
+    fontFamily: 'Poppins-Medium',
     margin: hp(2),
   },
   flexcardrow: {
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
   },
   savetext: {
     color: 'rgba(0, 0, 0, 0.7)',
-    fontWeight: '400',
+    fontFamily: 'Poppins-Regular',
   },
   btnpaynow: {
     backgroundColor: colors.white,

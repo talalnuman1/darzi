@@ -26,7 +26,7 @@ export default function CustomSizeRow({item}) {
           <Text style={styles.text}>Inch</Text>
         </View>
       </View>
-      <Image source={require('../assets/icons/person.png')} />
+      <Image source={item.image} />
     </SafeAreaView>
   );
 }

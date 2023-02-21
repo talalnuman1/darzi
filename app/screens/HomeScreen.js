@@ -58,6 +58,7 @@ const products = [
 
 export default function HomeScreen() {
   const navigation = useNavigation();
+  const [outerScrollEnabled, setOuterScrollEnabled] = useState(true);
   const [selectedTab, setSelectedTab] = useState(1); // set the initial selected tab to the first one
   const [category, setCategory] = useState(); // set the initial selected tab to the first one
   const tabButtonStyle = id =>
@@ -82,7 +83,7 @@ export default function HomeScreen() {
           </TouchableOpacity>
         ))}
       </View>
-      <ScrollView>
+      <ScrollView scrollEnabled={outerScrollEnabled}>
         <View style={styles.sideImageContainer}>
           <View style={styles.sideImage}>
             <Image
@@ -94,12 +95,22 @@ export default function HomeScreen() {
               }
             />
           </View>
-          {/* <ScrollView>
+          <ScrollView
+            // horizontal={true}
+            onPress={() => {
+              setOuterScrollEnabled(false);
+              console.log('first');
+            }}
+            onScrollBeginDrag={() => {
+              setOuterScrollEnabled(true);
+              console.log('234');
+            }}
+            onScrollEndDrag={() => setOuterScrollEnabled(false)}>
             {categoires.map((item, i) => (
-              <CategoryBox item={item} setCategory={setCategory} />
+              <CategoryBox item={item} setCategory={setCategory} key={i} />
             ))}
-          </ScrollView> */}
-          <View>
+          </ScrollView>
+          {/* <View>
             <FlatList
               showsVerticalScrollIndicator={false}
               data={categoires}
@@ -108,7 +119,7 @@ export default function HomeScreen() {
               )}
               keyExtractor={item => item.id}
             />
-          </View>
+          </View> */}
         </View>
         <View
           style={{

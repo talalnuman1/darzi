@@ -15,22 +15,25 @@ export default function BigProductCard({item}) {
         <Image
           style={{
             width: '100%',
-            height: '60%',
+            height: hp(20),
             resizeMode: 'cover',
             borderTopLeftRadius: wp(3),
             borderTopRightRadius: wp(3),
           }}
           source={item.image}
         />
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            top: hp(1),
+            right: wp(4),
+          }}
+          onPress={() => console.log('Add to Wishlist')}>
+          <Image source={require('../assets/icons/heart.png')} />
+        </TouchableOpacity>
         <View style={styles.bottomContainer}>
-          <Text style={styles.title}>Lorem Ipsum is simply dummy text</Text>
+          <Text style={styles.title}>{item.title}</Text>
           <View style={styles.bottom}>
-            <TouchableOpacity onPress={() => console.log('Added to Cart')}>
-              <Image
-                style={styles.logo}
-                source={require('../assets/icons/shopping-cart.png')}
-              />
-            </TouchableOpacity>
             <Text style={styles.pirce}>Rs: {item?.price}</Text>
           </View>
         </View>
@@ -41,7 +44,7 @@ export default function BigProductCard({item}) {
 const styles = StyleSheet.create({
   container: {
     width: wp(43),
-    height: hp(35),
+    // height: hp(35),
     backgroundColor: colors.white,
     borderRadius: wp(3),
     marginVertical: wp(2),
@@ -61,7 +64,7 @@ const styles = StyleSheet.create({
     // bottom: -70,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
   },
   pirce: {
     color: colors.darkGrey,

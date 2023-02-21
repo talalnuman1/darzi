@@ -45,9 +45,6 @@ export default function CartCompotent({item}) {
             </View>
           </View>
         </View>
-        <TouchableOpacity style={styles.margintop}>
-          <Text style={styles.textlorem}>Necessary Extra Details</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );

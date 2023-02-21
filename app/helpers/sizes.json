@@ -1,42 +1,6 @@
 [
     {
         "title": "Shirt Length",
-        "image": "..//assets/icons/person.png"
-    },
-    {
-        "title": "Arm Length",
-        "image": "..//assets/icons/person.png"
-    },
-    {
-        "title": "Shoulder Length",
-        "image": "..//assets/icons/person.png"
-    },
-    {
-        "title": "Mark Shoulder",
-        "image": "..//assets/icons/person.png"
-    },
-    {
-        "title": "Neck",
-        "image": "..//assets/icons/person.png"
-    },
-    {
-        "title": "Chest",
-        "image": "..//assets/icons/person.png"
-    },
-    {
-        "title": "Waist",
-        "image": "..//assets/icons/person.png"
-    },
-    {
-        "title": "Shalwar Length",
-        "image": "..//assets/icons/person.png"
-    },
-    {
-        "title": "Paincha",
-        "image": "..//assets/icons/person.png"
-    },
-    {
-        "title": "Cuff",
-        "image": "..//assets/icons/person.png"
+        "image": "require('../assets/icons/shirt_length.png')"
     }
 ]

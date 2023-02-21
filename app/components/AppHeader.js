@@ -3,14 +3,27 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import {colors} from '../config/constants';
 
-const AppHeader = ({title, onPressBack}) => {
+const AppHeader = ({title, onPressBack, onHeartPress}) => {
   return (
     <View style={styles.header}>
       <TouchableOpacity onPress={onPressBack}>
         <Image source={require('../assets/icons/back.png')} />
       </TouchableOpacity>
       <Text style={styles.title}>{title}</Text>
-      <View style={{width: 24}} />
+      {onHeartPress && (
+        <TouchableOpacity
+          onPress={onHeartPress}
+          style={{
+            width: 30,
+            backgroundColor: colors.white,
+            height: 30,
+            borderRadius: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Image source={require('../assets/icons/heart.png')} />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

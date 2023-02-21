@@ -97,18 +97,19 @@ const styles = StyleSheet.create({
   },
   input: {
     height: hp(6),
-    width: wp(45),
+    width: wp(60),
     backgroundColor: '#F2F2F2',
     alignItems: 'center',
     margin: hp(1),
     borderRadius: wp(2),
-    marginBottom: hp(5),
-    marginTop: hp(2),
+    // marginBottom: hp(2),
+    // marginTop: hp(1),
   },
   subcontiner: {
     backgroundColor: colors.white,
     height: hp(64),
-    padding: hp(4),
+    paddingVertical: hp(4),
+    paddingHorizontal: wp(2),
     borderRadius: 8,
     alignItems: 'flex-end',
     alignSelf: 'flex-end',
@@ -123,7 +124,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: wp(2),
     elevation: 9,
-    marginTop: hp(14),
+    marginTop: hp(21),
+    width: wp(50),
+    alignSelf: 'center',
   },
   btnsignupblack: {
     backgroundColor: colors.black,
@@ -143,12 +146,12 @@ const styles = StyleSheet.create({
     fontSize: hp(4),
     color: colors.black,
     marginBottom: hp(6),
-    fontWeight: '600',
+    fontFamily: 'Poppins-SemiBold',
   },
   textformtext: {
     color: 'rgba(0, 0, 0, 0.3)',
     fontSize: hp(2),
-    fontWeight: '600',
+    fontFamily: 'Poppins-SemiBold',
     marginLeft: wp(2),
   },
   cricle2: {
@@ -173,7 +176,7 @@ const styles = StyleSheet.create({
   },
   signtext: {
     color: colors.black,
-    fontWeight: '500',
+    fontFamily: 'Poppins-Medium',
   },
   left: {
     position: 'absolute',
@@ -182,11 +185,11 @@ const styles = StyleSheet.create({
   },
   whitetext: {
     color: 'rgba(255, 255, 255, 0.78)',
-    fontWeight: '500',
+    fontFamily: 'Poppins-Medium',
   },
   blacktext: {
     color: colors.black,
-    fontWeight: '500',
+    fontFamily: 'Poppins-Medium',
   },
   littleleft: {
     position: 'absolute',
@@ -198,7 +201,7 @@ const styles = StyleSheet.create({
   },
   talkBubbleTriangle: {
     position: 'absolute',
-    left: wp(28),
+    left: wp(25),
     top: 10,
     width: 0,
     height: 0,

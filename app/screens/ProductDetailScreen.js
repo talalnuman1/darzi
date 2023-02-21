@@ -14,6 +14,7 @@ import {
 } from 'react-native-responsive-screen';
 import {colors} from '../config/constants';
 import {useNavigation} from '@react-navigation/native';
+import SizeModal from '../components/SizeModal';
 
 const sizes = [
   {id: 1, title: 'S'},
@@ -24,6 +25,8 @@ const sizes = [
 export default function ProductDetailScreen() {
   const navigation = useNavigation();
   const [selectedSize, setSelectedSize] = useState();
+
+  const [modalVisible, setModalVisible] = useState(false);
   const sizeButtonStyle = id =>
     id === selectedSize ? styles.sizeContainer : styles.acitveSizeContainer;
   const sizeTextStyle = id =>
@@ -33,12 +36,15 @@ export default function ProductDetailScreen() {
       <AppHeader
         title={'Black Shalwar'}
         onPressBack={() => navigation.goBack()}
+        onHeartPress={() => console.log('Add to Wishlist')}
       />
       <View style={styles.container}>
-        <Image
-          style={{height: hp(55), width: '100%'}}
-          source={require('../assets/images/woman.png')}
-        />
+        <View>
+          <Image
+            style={{height: hp(55), width: '100%'}}
+            source={require('../assets/images/woman2.png')}
+          />
+        </View>
         <View style={styles.titleRow}>
           <Text style={styles.title}>Lorem Ipsum</Text>
           <View style={styles.ratingContainer}>
@@ -60,7 +66,9 @@ export default function ProductDetailScreen() {
               <Text style={sizeTextStyle(size.id)}>{size.title}</Text>
             </TouchableOpacity>
           ))}
-          <Text style={styles.mySize}>My Size</Text>
+          <TouchableOpacity>
+            <Text style={styles.mySize}>My Sizes</Text>
+          </TouchableOpacity>
           <TouchableOpacity
             style={styles.addSize}
             onPress={() => navigation.navigate('CustomSize')}>
@@ -72,10 +80,14 @@ export default function ProductDetailScreen() {
         <Text style={styles.price}>PKR:3000</Text>
         <TouchableOpacity
           style={styles.addToCartBtn}
-          onPress={() => console.log('Add to Cart')}>
+          onPress={() => setModalVisible(true)}>
           <Text style={styles.addToCartText}>Add to Cart</Text>
         </TouchableOpacity>
       </View>
+      <SizeModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
     </SafeAreaView>
   );
 }
