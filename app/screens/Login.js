@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -16,6 +16,54 @@ import {colors} from '../config/constants';
 import {useNavigation} from '@react-navigation/native';
 export default function Login() {
   const navigation = useNavigation();
+  const [inputValues, setInputValues] = useState({
+    email: '',
+    password: '',
+  });
+  const [errors, setErrors] = useState({
+    email: '',
+    password: '',
+  });
+
+  const handleInputChange = (key, value) => {
+    console.log(value);
+    setInputValues({...inputValues, [key]: value});
+    if (key === 'email') {
+      // Check if email is valid
+      const emailRegex = /\S+@\S+\.\S+/;
+      setErrors({
+        ...errors,
+        email: emailRegex.test(value) ? '' : 'Please enter a valid email',
+      });
+    } else if (key === 'password') {
+      // Check if password is at least 8 characters long
+      setErrors({
+        ...errors,
+        password:
+          value.length >= 8
+            ? ''
+            : 'Password must be at least 8 characters long',
+        confirmPassword:
+          value === inputValues.confirmPassword ? '' : 'Passwords do not match',
+      });
+    }
+  };
+  const handleSubmit = () => {
+    // Check if all fields are valid
+    if (
+      errors.email === '' &&
+      errors.password === '' &&
+      inputValues.email.length > 0 &&
+      inputValues.password.length > 0
+    ) {
+      // Submit form
+      console.log('Form submitted');
+      navigation.navigate('Home');
+    } else {
+      console.log(errors);
+      console.log('Form has errors');
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.cricle} />
@@ -41,7 +89,12 @@ export default function Login() {
                 style={styles.iconstyle}
               />
             </View>
-            <TextInput style={styles.input} keyboardType="email-address" />
+            <TextInput
+              style={styles.input}
+              keyboardType="email-address"
+              value={inputValues.email}
+              onChangeText={value => handleInputChange('email', value)}
+            />
             <View style={styles.flexrow}>
               <Text style={styles.textformtext}>Password</Text>
               <Image
@@ -49,10 +102,15 @@ export default function Login() {
                 style={styles.iconstyle}
               />
             </View>
-            <TextInput style={styles.input} keyboardType="visible-password" />
+            <TextInput
+              style={styles.input}
+              keyboardType="visible-password"
+              value={inputValues.password}
+              onChangeText={value => handleInputChange('password', value)}
+            />
             <TouchableOpacity
               style={styles.btnsignup}
-              onPress={() => navigation.navigate('Home')}>
+              onPress={() => handleSubmit()}>
               <Text style={styles.signtext}>Login</Text>
             </TouchableOpacity>
           </View>
@@ -102,6 +160,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: hp(1),
     borderRadius: wp(2),
+    color: colors.black,
+    fontFamily: 'Poppins-Regular',
     // marginBottom: hp(2),
     // marginTop: hp(1),
   },

@@ -23,6 +23,7 @@ import CarouselCardItem, {
   SLIDER_WIDTH,
   ITEM_WIDTH,
 } from '../components/CarouselCardItem';
+import MySizeModal from '../components/mysizemodel';
 
 const sizes = [
   {id: 1, title: 'S'},
@@ -47,16 +48,13 @@ const data = [
 export default function ProductDetailScreen() {
   const isCarousel = React.useRef(null);
   const [index, setIndex] = React.useState(0);
-  const images = [
-    'https://source.unsplash.com/1024x768/?nature',
-    'https://source.unsplash.com/1024x768/?water',
-    'https://source.unsplash.com/1024x768/?tree',
-  ];
+
   const width = Dimensions.get('window').width;
   const navigation = useNavigation();
   const [selectedSize, setSelectedSize] = useState();
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisibleTwo, setModalVisibleTwo] = useState(false);
   const sizeButtonStyle = id =>
     id === selectedSize ? styles.sizeContainer : styles.acitveSizeContainer;
   const sizeTextStyle = id =>
@@ -96,34 +94,6 @@ export default function ProductDetailScreen() {
             inactiveDotScale={0.6}
             tappableDots={true}
           />
-          {/* <Image
-            style={{height: hp(55), width: '100%'}}
-            source={require('../assets/images/woman2.png')}
-          /> */}
-          {/* <Carousel
-            loop
-            width={width}
-            height={width / 2}
-            autoPlay={true}
-            data={images}
-            scrollAnimationDuration={1000}
-            onSnapToItem={index => console.log('current index:', index)}
-            renderItem={({index}) => (
-              <View
-                style={{
-                  flex: 1,
-                  borderWidth: 1,
-                  justifyContent: 'center',
-                }}>
-                <ActivityIndicator size="small" />
-                <Image
-                  source={{
-                    uri: `https://picsum.photos/800/600?t=${new Date().getTime()}`,
-                  }}
-                />
-              </View>
-            )}
-          /> */}
         </View>
         <View style={styles.titleRow}>
           <Text style={styles.title}>Lorem Ipsum</Text>
@@ -146,7 +116,7 @@ export default function ProductDetailScreen() {
               <Text style={sizeTextStyle(size.id)}>{size.title}</Text>
             </TouchableOpacity>
           ))}
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setModalVisibleTwo(true)}>
             <Text style={styles.mySize}>My Sizes</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -167,6 +137,10 @@ export default function ProductDetailScreen() {
       <SizeModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+      />
+      <MySizeModal
+        modalVisible={modalVisibleTwo}
+        setModalVisible={setModalVisibleTwo}
       />
     </SafeAreaView>
   );
@@ -214,7 +188,7 @@ const styles = StyleSheet.create({
     marginTop: hp(2),
   },
   size: {
-    fontSize: 16,
+    fontSize: 15,
     color: colors.black,
     fontFamily: 'Poppins-Regular',
   },
@@ -239,7 +213,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   mySize: {
-    fontSize: 16,
+    fontSize: 15,
     color: colors.black,
     fontFamily: 'Poppins-SemiBold',
   },
@@ -254,7 +228,7 @@ const styles = StyleSheet.create({
   addToCart: {
     position: 'absolute',
     flexDirection: 'row',
-    bottom: -hp(12),
+    bottom: -hp(12.1),
     width: '100%',
     height: hp(10),
     backgroundColor: colors.black,

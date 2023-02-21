@@ -55,6 +55,7 @@ export default function CheckOutScreen() {
               style={styles.input}
               keyboardType="text"
               placeholder="Ghias ALi"
+              placeholderTextColor={colors.darkGrey}
             />
           </View>
           <Text style={styles.nametext}>Card Number</Text>
@@ -64,6 +65,7 @@ export default function CheckOutScreen() {
               style={styles.input}
               keyboardType="text"
               placeholder="Ghias ALi"
+              placeholderTextColor={colors.darkGrey}
             />
           </View>
           <View style={styles.cvcflexrow}>
@@ -75,6 +77,7 @@ export default function CheckOutScreen() {
                   style={styles.input}
                   keyboardType="text"
                   placeholder="Ghias ALi"
+                  placeholderTextColor={colors.darkGrey}
                 />
               </View>
             </View>
@@ -86,6 +89,7 @@ export default function CheckOutScreen() {
                   style={styles.input}
                   keyboardType="text"
                   placeholder="Ghias ALi"
+                  placeholderTextColor={colors.darkGrey}
                 />
               </View>
             </View>

@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
   },
   signtext: {
     color: colors.black,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-SemiBold',
   },
   left: {
     position: 'absolute',

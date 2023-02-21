@@ -95,19 +95,10 @@ export default function HomeScreen() {
               }
             />
           </View>
-
-          {/* <View>
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              data={categoires}
-              renderItem={({item}) => (
-                <CategoryBox item={item} setCategory={setCategory} />
-              )}
-              keyExtractor={item => item.id}
-            />
-          </View> */}
         </View>
-        <ScrollView horizontal={true} style={{width: wp(90)}}>
+        <ScrollView
+          horizontal={true}
+          style={{width: wp(100), paddingHorizontal: hp(1)}}>
           {categoires.map((item, i) => (
             <CategoryBox item={item} setCategory={setCategory} key={i} />
           ))}
@@ -115,7 +106,7 @@ export default function HomeScreen() {
         <View
           style={{
             alignItems: 'flex-end',
-            marginTop: hp(2),
+            marginTop: hp(1),
             paddingHorizontal: wp(5),
           }}>
           <TouchableOpacity onPress={() => navigation.navigate('Products')}>
@@ -180,19 +171,19 @@ const styles = StyleSheet.create({
   },
   sideImage: {
     alignSelf: 'center',
-    borderRadius: wp(5),
+    borderRadius: wp(3),
     width: '100%',
     height: hp(35),
     backgroundColor: colors.white,
   },
   products: {
     width: '100%',
-    marginTop: hp(2),
+    marginTop: hp(1),
     flexDirection: 'row',
     justifyContent: 'space-evenly',
   },
   seeMore: {
     color: colors.darkGrey,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-Bold',
   },
 });

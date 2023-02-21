@@ -15,6 +15,7 @@ import {
 import {colors} from '../config/constants';
 
 export default function CartCompotent({item}) {
+  const [count, setCount] = useState(0);
   return (
     <View style={styles.container}>
       <View style={styles.boxclr}>
@@ -35,11 +36,25 @@ export default function CartCompotent({item}) {
           <View style={styles.centercnter}>
             <Image source={require('../assets/icons/bag.png')} />
             <View style={styles.center}>
-              <TouchableOpacity style={styles.blackbox}>
+              <TouchableOpacity
+                style={styles.blackbox}
+                onPress={() => {
+                  setCount(count + 1);
+                }}>
                 <Text style={styles.white}>+</Text>
               </TouchableOpacity>
-              <Text style={styles.counttext}>1</Text>
-              <TouchableOpacity style={styles.blackbox}>
+              <Text
+                style={styles.counttext}
+                onPress={() => {
+                  setCount(0);
+                }}>
+                {count}
+              </Text>
+              <TouchableOpacity
+                style={styles.blackbox}
+                onPress={() => {
+                  setCount(count - 1);
+                }}>
                 <Text style={styles.white}>-</Text>
               </TouchableOpacity>
             </View>
@@ -70,7 +85,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '75%',
-    marginTop: hp(6),
+    marginTop: hp(7),
   },
   tickview: {
     flexDirection: 'row',
@@ -78,7 +93,7 @@ const styles = StyleSheet.create({
   },
   blackbox: {
     backgroundColor: colors.black,
-    width: wp(4),
+    width: wp(4.5),
     height: hp(3),
     alignItems: 'center',
     alignSelf: 'center',
@@ -110,5 +125,6 @@ const styles = StyleSheet.create({
   white: {
     color: colors.white,
     textAlign: 'center',
+    fontSize: 15,
   },
 });
