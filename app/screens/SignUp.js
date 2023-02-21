@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -16,6 +16,66 @@ import {colors} from '../config/constants';
 import {useNavigation} from '@react-navigation/native';
 export default function SignUp() {
   const navigation = useNavigation();
+  const [inputValues, setInputValues] = useState({
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+  const [errors, setErrors] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+
+  const handleInputChange = (key, value) => {
+    console.log(value);
+    setInputValues({...inputValues, [key]: value});
+    if (key === 'email') {
+      // Check if email is valid
+      const emailRegex = /\S+@\S+\.\S+/;
+      setErrors({
+        ...errors,
+        email: emailRegex.test(value) ? '' : 'Please enter a valid email',
+      });
+    } else if (key === 'password') {
+      // Check if password is at least 8 characters long
+      setErrors({
+        ...errors,
+        password:
+          value.length >= 8
+            ? ''
+            : 'Password must be at least 8 characters long',
+        confirmPassword:
+          value === inputValues.confirmPassword ? '' : 'Passwords do not match',
+      });
+    } else if (key === 'confirmPassword') {
+      // Check if passwords match
+      setErrors({
+        ...errors,
+        confirmPassword:
+          value === inputValues.password ? '' : 'Passwords do not match',
+      });
+    }
+  };
+  const handleSubmit = () => {
+    // Check if all fields are valid
+    if (
+      errors.email === '' &&
+      errors.password === '' &&
+      errors.confirmPassword === '' &&
+      inputValues.email.length > 0 &&
+      inputValues.password.length > 0 &&
+      inputValues.confirmPassword.length > 0
+    ) {
+      // Submit form
+      console.log('Form submitted');
+    } else {
+      console.log(errors);
+      console.log('Form has errors');
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.cricle} />
@@ -41,7 +101,12 @@ export default function SignUp() {
                 style={styles.iconstyle}
               />
             </View>
-            <TextInput style={styles.input} keyboardType="text" />
+            <TextInput
+              style={styles.input}
+              keyboardType="text"
+              value={inputValues.username}
+              onChangeText={value => handleInputChange('username', value)}
+            />
             <View style={styles.flexrow}>
               <Text style={styles.textformtext}>Email</Text>
               <Image
@@ -49,7 +114,12 @@ export default function SignUp() {
                 style={styles.iconstyle}
               />
             </View>
-            <TextInput style={styles.input} keyboardType="email-address" />
+            <TextInput
+              style={styles.input}
+              keyboardType="email-address"
+              value={inputValues.email}
+              onChangeText={value => handleInputChange('email', value)}
+            />
             <View style={styles.flexrow}>
               <Text style={styles.textformtext}>Password</Text>
               <Image
@@ -57,7 +127,12 @@ export default function SignUp() {
                 style={styles.iconstyle}
               />
             </View>
-            <TextInput style={styles.input} keyboardType="visible-password" />
+            <TextInput
+              style={styles.input}
+              keyboardType="visible-password"
+              value={inputValues.password}
+              onChangeText={value => handleInputChange('password', value)}
+            />
             <View style={styles.flexrow}>
               <Text style={styles.textformtext}>Confrim Password</Text>
               <Image
@@ -65,10 +140,19 @@ export default function SignUp() {
                 style={styles.iconstyle}
               />
             </View>
-            <TextInput style={styles.input} keyboardType="visible-password" />
+            <TextInput
+              style={styles.input}
+              keyboardType="visible-password"
+              value={inputValues.confirmPassword}
+              onChangeText={value =>
+                handleInputChange('confirmPassword', value)
+              }
+            />
             <TouchableOpacity
               style={styles.btnsignup}
-              onPress={() => navigation.navigate('Login')}>
+              onPress={() => {
+                handleSubmit();
+              }}>
               <Text style={styles.signtext}>Signup</Text>
             </TouchableOpacity>
           </View>
@@ -123,6 +207,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: hp(1),
     borderRadius: wp(2),
+    color: colors.black,
+    fontFamily: 'Poppins-Regular',
     // marginBottom: hp(2),
     // marginTop: hp(1),
   },
