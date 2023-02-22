@@ -21,15 +21,7 @@ import {getAllCategories} from '../api/functions';
 import {useNavigation} from '@react-navigation/native';
 import api from '../api';
 import {cancelPendingRequests} from '../api/axiosInstance';
-const tabButtons = [
-  {
-    id: 1,
-    title: 'All',
-  },
-  {id: 2, title: 'Men'},
-  {id: 3, title: 'Women'},
-  {id: 4, title: 'Kids'},
-];
+import Loader from '../components/Loader';
 
 const categoires = [
   {id: 1, title: 'Shalwar', image: require('../assets/images/side-woman.png')},
@@ -61,103 +53,131 @@ const products = [
 
 export default function HomeScreen() {
   const navigation = useNavigation();
-  const [selectedTab, setSelectedTab] = useState(1); // set the initial selected tab to the first one
+  const [selectedTab, setSelectedTab] = useState('All'); // set the initial selected tab to the first one
   const [category, setCategory] = useState(); // set the initial selected tab to the first one
+  const [subCategory, setSubCategory] = useState(); // set the initial selected tab to the first one
+  const [loading, setLoading] = useState(true);
   const tabButtonStyle = id =>
     id === selectedTab ? styles.activeTabButton : styles.tabButton;
   const tabTextStyle = id =>
     id === selectedTab ? styles.activeTabText : styles.tabText;
-  // const getCategories = async () => {
-  //   try {
-  //     // const categoires = await getAllCategories();
-  //     const categoires = await axios.get(
-  //       'https://darzi.testweb.com.pk/api/categorylist',
-  //     );
-  //     console.log(categoires, 'CATEGORIES');
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // const getCategories = async () => {
-  //   categories('categorylist', {
-  //     method: 'Get',
-  //   })
-  //     .then(res => console.log(res.data))
-  //     .catch(err => console.log(err));
-  // };
-  // useEffect(() => {
-  //   getCategories();
-  // }, []);
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await api.category.getCategories();
-        console.log(response, 'THIS IS DATA');
-        // setCategory(response.data);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
 
+  // Fetch All the categories like Men, Kids and Women☕
+  const fetchCategories = async () => {
+    try {
+      const response = await api.category.getCategories();
+      setCategory(response);
+      console.log(response, 'Category');
+      fetchSubCategories();
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  // Fetch All subcategories
+  const fetchSubCategories = async () => {
+    try {
+      setLoading(true);
+      const response = await api.subCategory.getSubCategories();
+      console.log(response, 'SubCategories');
+      setSubCategory(response);
+      setLoading(false);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  // Fetches the sub categories by category id
+  const fetchSubCategory = async id => {
+    try {
+      setLoading(true);
+      const response = await api.subCategory.getSubCategoryById(id);
+      console.log(response, ' SubCategory By ID');
+      setSubCategory(response);
+      setLoading(false);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const onTabClick = id => {
+    setSelectedTab(id);
+    fetchSubCategory(id);
+  };
+  // Tab Button to get All Sub Categories
+  const onAllClick = () => {
+    setSelectedTab('All');
+    fetchSubCategories();
+  };
+  useEffect(() => {
     fetchCategories();
     return () => {
       cancelPendingRequests();
     };
   }, []);
-
   return (
     <SafeAreaView style={styles.container}>
-      <Image source={require('../assets/images/woman.png')} />
-      <View style={{paddingHorizontal: wp(17)}}>
-        <SearchBar />
-      </View>
-      {/* Tab Buttons */}
-      <View style={styles.tabs}>
-        {tabButtons.map(item => (
-          <TouchableOpacity
-            style={tabButtonStyle(item.id)}
-            key={item.id}
-            onPress={() => setSelectedTab(item.id)}>
-            <Text style={tabTextStyle(item.id)}>{item.title}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-      <ScrollView>
-        <View style={styles.sideImageContainer}>
-          <View style={styles.sideImage}>
-            <Image
-              style={styles.sideImage}
-              source={
-                category
-                  ? categoires[category - 1]?.image
-                  : require('../assets/images/woman2.png')
-              }
-            />
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <Image source={require('../assets/images/woman.png')} />
+          <View style={{paddingHorizontal: wp(17)}}>
+            <SearchBar />
           </View>
-        </View>
-        <ScrollView
-          horizontal={true}
-          style={{width: wp(95), paddingHorizontal: hp(1)}}>
-          {categoires.map((item, i) => (
-            <CategoryBox item={item} setCategory={setCategory} key={i} />
-          ))}
-        </ScrollView>
-        <View
-          style={{
-            alignItems: 'flex-end',
-            marginTop: hp(1),
-            paddingHorizontal: wp(5),
-          }}>
-          <TouchableOpacity onPress={() => navigation.navigate('Products')}>
-            <Text style={styles.seeMore}>See More</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.products}>
-          {products.map(item => (
-            <ProductCard item={item} />
-          ))}
-        </View>
-      </ScrollView>
+          {/* Tab Buttons */}
+          <View style={styles.tabs}>
+            <TouchableOpacity
+              style={tabButtonStyle('All')}
+              onPress={onAllClick}>
+              <Text style={tabTextStyle('All')}>All</Text>
+            </TouchableOpacity>
+            {category.map(item => (
+              <TouchableOpacity
+                style={tabButtonStyle(item.category.id)}
+                key={item.category.id}
+                onPress={() => onTabClick(item.category.id)}>
+                <Text style={tabTextStyle(item.id)}>{item.category.name}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          <ScrollView>
+            <View style={styles.sideImageContainer}>
+              <View style={styles.sideImage}>
+                <Image
+                  style={styles.sideImage}
+                  source={
+                    require('../assets/images/woman2.png')
+                    // category
+                    //   ? categoires[category - 1]?.image
+                    //   : require('../assets/images/woman2.png')
+                  }
+                />
+              </View>
+            </View>
+            <ScrollView
+              horizontal={true}
+              style={{width: wp(95), paddingHorizontal: hp(1)}}>
+              {subCategory.map((item, i) => (
+                <CategoryBox item={item} setCategory={setCategory} key={i} />
+              ))}
+            </ScrollView>
+            <View
+              style={{
+                alignItems: 'flex-end',
+                marginTop: hp(1),
+                paddingHorizontal: wp(5),
+              }}>
+              <TouchableOpacity onPress={() => navigation.navigate('Products')}>
+                <Text style={styles.seeMore}>See More</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.products}>
+              {products.map(item => (
+                <ProductCard item={item} />
+              ))}
+            </View>
+          </ScrollView>
+        </>
+      )}
     </SafeAreaView>
   );
 }

@@ -12,6 +12,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {colors} from '../config/constants';
+import {APP_API_URL} from '@env';
 
 export default function CategoryBox({item, setCategory}) {
   return (
@@ -20,10 +21,12 @@ export default function CategoryBox({item, setCategory}) {
       onPress={() => {
         setCategory(item?.id);
       }}>
-      <ImageBackground source={item.image} style={styles.image}>
+      <ImageBackground
+        source={{uri: `${APP_API_URL}${item.images[0]?.filename}`}}
+        style={styles.image}>
         <View style={styles.overlay}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.title}>{item.subcategory.name}</Text>
           </View>
         </View>
       </ImageBackground>
