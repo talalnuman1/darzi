@@ -45,6 +45,19 @@ const SizeModal = ({modalVisible, setModalVisible}) => {
   const [stichType, setStichType] = useState('');
   const [tailType, setTailType] = useState('');
   const [shalwarPocket, setShalwarPocket] = useState();
+
+  const handleSubmit = () => {
+    // Check if all fields are valid
+    if (errors.name === '' && inputValues.name.length > 0) {
+      // Submit form
+      console.log('Form submitted');
+      console.log(inputValues);
+      // navigation.navigate('Home');
+    } else {
+      console.log(errors);
+      console.log('Form has errors');
+    }
+  };
   return (
     <View style={styles.centeredView}>
       <Modal animationType="slide" transparent={true} visible={modalVisible}>

@@ -12,7 +12,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-export default function CustomSizeRow({item}) {
+export default function CustomSizeRow({item, onChange}) {
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -22,6 +22,7 @@ export default function CustomSizeRow({item}) {
             style={styles.input}
             numberOfLines={1}
             keyboardType="numeric"
+            onChangeText={onChange}
           />
           <Text style={styles.text}>Inch</Text>
         </View>
