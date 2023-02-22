@@ -58,6 +58,7 @@ export default function Login() {
     ) {
       // Submit form
       console.log('Form submitted');
+      console.log(inputValues);
       navigation.navigate('Home');
     } else {
       console.log(errors);

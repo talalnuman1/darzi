@@ -69,6 +69,7 @@ export default function SignUp() {
       inputValues.confirmPassword.length > 0
     ) {
       // Submit form
+      console.log(inputValues);
       console.log('Form submitted');
     } else {
       console.log(errors);

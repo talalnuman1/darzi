@@ -19,9 +19,8 @@ import CategoryBox from '../components/CategoryBox';
 import ProductCard from '../components/ProductCard';
 import {getAllCategories} from '../api/functions';
 import {useNavigation} from '@react-navigation/native';
-import axios from 'axios';
-import {categories} from '../api/api';
-
+import api from '../api';
+import {cancelPendingRequests} from '../api/axiosInstance';
 const tabButtons = [
   {
     id: 1,
@@ -79,15 +78,31 @@ export default function HomeScreen() {
   //     console.log(error);
   //   }
   // };
-  const getCategories = async () => {
-    categories('/categorylist', {
-      method: 'Get',
-    })
-      .then(res => console.log(res.data))
-      .catch(err => console.log(err));
-  };
+  // const getCategories = async () => {
+  //   categories('categorylist', {
+  //     method: 'Get',
+  //   })
+  //     .then(res => console.log(res.data))
+  //     .catch(err => console.log(err));
+  // };
+  // useEffect(() => {
+  //   getCategories();
+  // }, []);
   useEffect(() => {
-    getCategories();
+    const fetchCategories = async () => {
+      try {
+        const response = await api.category.getCategories();
+        console.log(response, 'THIS IS DATA');
+        // setCategory(response.data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
+    fetchCategories();
+    return () => {
+      cancelPendingRequests();
+    };
   }, []);
 
   return (
