@@ -19,9 +19,8 @@ import CategoryBox from '../components/CategoryBox';
 import ProductCard from '../components/ProductCard';
 import {getAllCategories} from '../api/functions';
 import {useNavigation} from '@react-navigation/native';
-import axios from 'axios';
-import {categories} from '../api/api';
-
+// import axios from 'axios';
+// r
 const tabButtons = [
   {
     id: 1,
