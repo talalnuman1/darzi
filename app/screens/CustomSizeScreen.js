@@ -5,8 +5,9 @@ import {
   FlatList,
   TouchableOpacity,
   ScrollView,
+  TextInput,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AppHeader from '../components/AppHeader';
 import {useNavigation} from '@react-navigation/native';
@@ -19,6 +20,48 @@ import sizes from '../helpers/sizes.js';
 import {colors} from '../config/constants';
 
 export default function CustomSizeScreen() {
+  const [inputValues, setInputValues] = useState({
+    name: '',
+    shirtLength: '',
+    armLength: '',
+    shoulderLength: '',
+    markShoulder: '',
+    neck: '',
+    chest: '',
+    waist: '',
+    shalwarLength: '',
+    paincha: '',
+    cuff: '',
+  });
+  const [errors, setErrors] = useState({
+    name: '',
+    shirtLength: '',
+    armLength: '',
+    shoulderLength: '',
+    markShoulder: '',
+    neck: '',
+    chest: '',
+    waist: '',
+    shalwarLength: '',
+    paincha: '',
+    cuff: '',
+  });
+  const handleInputChange = (key, value) => {
+    console.log(value);
+    setInputValues({...inputValues, [key]: value});
+  };
+  const handleSubmit = () => {
+    // Check if all fields are valid
+    if (errors.name === '' && inputValues.name.length > 0) {
+      // Submit form
+      console.log('Form submitted');
+      console.log(inputValues);
+      // navigation.navigate('Home');
+    } else {
+      console.log(errors);
+      console.log('Form has errors');
+    }
+  };
   const navigation = useNavigation();
 
   return (
@@ -27,24 +70,30 @@ export default function CustomSizeScreen() {
         title={'Custom Size'}
         onPressBack={() => navigation.goBack()}
       />
-      {/* <FlatList
-        style={styles.container}
-        showsVerticalScrollIndicator={false}
-        data={sizes}
-        renderItem={({item}) => <CustomSizeRow item={item} />}
-        keyExtractor={item => item.title}
-      /> */}
       <ScrollView style={styles.container}>
+        <View style={styles.flexrwoname}>
+          <Text style={styles.modalText2}>Name:</Text>
+          <TextInput
+            style={styles.input}
+            numberOfLines={1}
+            keyboardType="text"
+            onChangeText={value => handleInputChange('name', value)}
+          />
+        </View>
         {sizes.map(item => (
-          <CustomSizeRow item={item} />
+          <CustomSizeRow
+            item={item}
+            onChange={value => handleInputChange(item.name, value)}
+          />
         ))}
 
         <TouchableOpacity
           style={[styles.saveButton]}
-          onPress={() => {
-            //   setModalVisible(!modalVisible);
-            navigation.goBack();
-          }}>
+          // onPress={() => {
+          //     setModalVisible(!modalVisible);
+          //   navigation.goBack();
+          // }}
+          onPress={() => handleSubmit()}>
           <Text style={[styles.modalText, styles.textStyle]}>Save</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -76,5 +125,22 @@ const styles = StyleSheet.create({
     fontSize: hp(1.7),
     fontFamily: 'Poppins-Regular',
     color: colors.black,
+  },
+  modalText2: {
+    fontSize: hp(2),
+    fontFamily: 'Poppins-SemiBold',
+    color: colors.black,
+  },
+  input: {
+    width: wp(50),
+    backgroundColor: colors.white,
+    borderRadius: wp(2),
+    color: colors.black,
+    elevation: 5,
+  },
+  flexrwoname: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
