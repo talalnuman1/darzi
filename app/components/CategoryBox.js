@@ -14,12 +14,19 @@ import {
 import {colors} from '../config/constants';
 import {APP_API_URL} from '@env';
 
-export default function CategoryBox({item, setCategory}) {
+export default function CategoryBox({
+  item,
+  setSubCategoryImage,
+  setSubCategoryItem,
+  fetchProducts,
+}) {
   return (
     <TouchableOpacity
       style={styles.card}
       onPress={() => {
-        setCategory(item?.id);
+        setSubCategoryImage(`${APP_API_URL}${item.images[0]?.filename}`);
+        setSubCategoryItem(item);
+        fetchProducts(item.subcategory.id);
       }}>
       <ImageBackground
         source={{uri: `${APP_API_URL}${item.images[0]?.filename}`}}

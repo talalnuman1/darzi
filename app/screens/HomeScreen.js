@@ -22,6 +22,7 @@ import {useNavigation} from '@react-navigation/native';
 import api from '../api';
 import {cancelPendingRequests} from '../api/axiosInstance';
 import Loader from '../components/Loader';
+import {APP_API_URL} from '@env';
 
 const categoires = [
   {id: 1, title: 'Shalwar', image: require('../assets/images/side-woman.png')},
@@ -56,7 +57,13 @@ export default function HomeScreen() {
   const [selectedTab, setSelectedTab] = useState('All'); // set the initial selected tab to the first one
   const [category, setCategory] = useState(); // set the initial selected tab to the first one
   const [subCategory, setSubCategory] = useState(); // set the initial selected tab to the first one
+  const [products, setProducts] = useState(); // set the initial selected tab to the first one
+  const [subCategoryImage, setSubCategoryImage] = useState();
+  const [categoryImage, setCategoryImage] = useState();
+  const [subCategoryItem, setSubCategoryItem] = useState();
   const [loading, setLoading] = useState(true);
+  const [categoryLoading, setCategoryLoading] = useState(true);
+  const [productLoading, setProductLoading] = useState(true);
   const tabButtonStyle = id =>
     id === selectedTab ? styles.activeTabButton : styles.tabButton;
   const tabTextStyle = id =>
@@ -67,12 +74,15 @@ export default function HomeScreen() {
     try {
       const response = await api.category.getCategories();
       setCategory(response);
+
+      setCategoryImage(APP_API_URL + response[0].images[0]?.filename);
       console.log(response, 'Category');
-      fetchSubCategories();
+      setCategoryLoading(false);
     } catch (error) {
       console.log(error.message);
     }
   };
+
   // Fetch All subcategories
   const fetchSubCategories = async () => {
     try {
@@ -80,6 +90,9 @@ export default function HomeScreen() {
       const response = await api.subCategory.getSubCategories();
       console.log(response, 'SubCategories');
       setSubCategory(response);
+      setSubCategoryItem(response[0]);
+      setSubCategoryImage(APP_API_URL + response[0].images[0]?.filename);
+      fetchProducts(response[0].subcategory.id);
       setLoading(false);
     } catch (error) {
       console.log(error.message);
@@ -92,7 +105,21 @@ export default function HomeScreen() {
       const response = await api.subCategory.getSubCategoryById(id);
       console.log(response, ' SubCategory By ID');
       setSubCategory(response);
+      setSubCategoryItem(response[0]);
+      setSubCategoryImage(APP_API_URL + response[0]?.images[0]?.filename);
+      fetchProducts(response[0].subcategory.id);
       setLoading(false);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  const fetchProducts = async id => {
+    try {
+      setProductLoading(true);
+      const response = await api.product.getProductsBySubCategoryId(id);
+      console.log(response, 'Products by SubCategoryID');
+      setProducts(response);
+      setProductLoading(false);
     } catch (error) {
       console.log(error.message);
     }
@@ -101,6 +128,10 @@ export default function HomeScreen() {
   const onTabClick = id => {
     setSelectedTab(id);
     fetchSubCategory(id);
+    const selectedCategory = category.find(
+      category => category.category.id === id,
+    );
+    setCategoryImage(APP_API_URL + selectedCategory?.images[0]?.filename);
   };
   // Tab Button to get All Sub Categories
   const onAllClick = () => {
@@ -109,74 +140,110 @@ export default function HomeScreen() {
   };
   useEffect(() => {
     fetchCategories();
+    fetchSubCategories();
     return () => {
       cancelPendingRequests();
     };
   }, []);
   return (
     <SafeAreaView style={styles.container}>
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <Image source={require('../assets/images/woman.png')} />
-          <View style={{paddingHorizontal: wp(17)}}>
-            <SearchBar />
-          </View>
-          {/* Tab Buttons */}
-          <View style={styles.tabs}>
+      <View style={{height: hp(22), width: '100%'}}>
+        {loading || categoryLoading ? (
+          <Loader size={16} />
+        ) : (
+          <Image
+            style={{height: '100%', width: '100%', resizeMode: 'cover'}}
+            source={{
+              uri: `${categoryImage}`,
+            }}
+          />
+        )}
+      </View>
+      <View style={{paddingHorizontal: wp(17)}}>
+        <SearchBar />
+      </View>
+      {/* Tab Buttons */}
+      {!categoryLoading && (
+        <View style={styles.tabs}>
+          <TouchableOpacity style={tabButtonStyle('All')} onPress={onAllClick}>
+            <Text style={tabTextStyle('All')}>All</Text>
+          </TouchableOpacity>
+          {category.map(item => (
             <TouchableOpacity
-              style={tabButtonStyle('All')}
-              onPress={onAllClick}>
-              <Text style={tabTextStyle('All')}>All</Text>
+              style={tabButtonStyle(item.category.id)}
+              key={item.category.id}
+              onPress={() => onTabClick(item.category.id)}>
+              <Text style={tabTextStyle(item.id)}>{item.category.name}</Text>
             </TouchableOpacity>
-            {category.map(item => (
+          ))}
+        </View>
+      )}
+      {loading ? (
+        <Loader size={30} />
+      ) : (
+        <ScrollView>
+          <View style={styles.sideImageContainer}>
+            <View style={styles.sideImage}>
               <TouchableOpacity
-                style={tabButtonStyle(item.category.id)}
-                key={item.category.id}
-                onPress={() => onTabClick(item.category.id)}>
-                <Text style={tabTextStyle(item.id)}>{item.category.name}</Text>
+                onPress={() =>
+                  navigation.navigate('Products', {
+                    subCategoryId: subCategoryItem?.subcategory?.id,
+                  })
+                }
+                style={{
+                  position: 'absolute',
+                  zIndex: 1,
+                  bottom: 0,
+                  right: 10,
+                }}>
+                <Text style={[styles.tabText]}>
+                  Click here to see more products
+                </Text>
               </TouchableOpacity>
-            ))}
+              <Image
+                style={styles.sideImage}
+                source={{uri: subCategoryImage}}
+              />
+            </View>
           </View>
-          <ScrollView>
-            <View style={styles.sideImageContainer}>
-              <View style={styles.sideImage}>
-                <Image
-                  style={styles.sideImage}
-                  source={
-                    require('../assets/images/woman2.png')
-                    // category
-                    //   ? categoires[category - 1]?.image
-                    //   : require('../assets/images/woman2.png')
-                  }
-                />
-              </View>
-            </View>
-            <ScrollView
-              horizontal={true}
-              style={{width: wp(95), paddingHorizontal: hp(1)}}>
-              {subCategory.map((item, i) => (
-                <CategoryBox item={item} setCategory={setCategory} key={i} />
-              ))}
-            </ScrollView>
-            <View
-              style={{
-                alignItems: 'flex-end',
-                marginTop: hp(1),
-                paddingHorizontal: wp(5),
-              }}>
-              <TouchableOpacity onPress={() => navigation.navigate('Products')}>
-                <Text style={styles.seeMore}>See More</Text>
-              </TouchableOpacity>
-            </View>
+          <ScrollView
+            horizontal={true}
+            style={{width: wp(95), paddingHorizontal: hp(1)}}>
+            {subCategory.map((item, i) => (
+              <CategoryBox
+                item={item}
+                fetchProducts={fetchProducts}
+                setSubCategoryItem={setSubCategoryItem}
+                setSubCategoryImage={setSubCategoryImage}
+                key={i}
+              />
+            ))}
+          </ScrollView>
+          <View
+            style={{
+              alignItems: 'flex-end',
+              marginTop: hp(1),
+              paddingHorizontal: wp(5),
+            }}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Products', {
+                  subCategoryId: subCategoryItem?.subcategory?.id,
+                })
+              }>
+              <Text style={styles.seeMore}>See More</Text>
+            </TouchableOpacity>
+          </View>
+          {productLoading ? (
+            <></>
+          ) : (
             <View style={styles.products}>
-              {products.map(item => (
+              {products.slice(0, 3).map(item => (
                 <ProductCard item={item} />
               ))}
             </View>
-          </ScrollView>
-        </>
+          )}
+        </ScrollView>
       )}
     </SafeAreaView>
   );
