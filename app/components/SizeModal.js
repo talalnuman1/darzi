@@ -12,6 +12,7 @@ import {
   TextInput,
   ScrollView,
   KeyboardAvoidingView,
+  Image,
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
@@ -48,20 +49,29 @@ const SizeModal = ({modalVisible, setModalVisible}) => {
 
   const handleSubmit = () => {
     // Check if all fields are valid
-    if (errors.name === '' && inputValues.name.length > 0) {
-      // Submit form
-      console.log('Form submitted');
-      console.log(inputValues);
-      // navigation.navigate('Home');
-    } else {
-      console.log(errors);
-      console.log('Form has errors');
-    }
+    // if (errors.name === '' && inputValues.name.length > 0) {
+    // Submit form
+    console.log('Form submitted');
+    console.log(collarType);
+    console.log(frontPocket);
+    // navigation.navigate('Home');
+    // } else {
+    // console.log(errors);
+    // console.log('Form has errors');
+    // }
   };
   return (
     <View style={styles.centeredView}>
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.modalView}>
+          <TouchableOpacity
+            style={styles.leftside}
+            onPress={() => setModalVisible(false)}>
+            <Image
+              style={styles.iconstyle}
+              source={require('../assets/icons/close1.png')}
+            />
+          </TouchableOpacity>
           <ScrollView>
             <View style={{marginTop: hp(2)}}>
               <Text style={styles.modalText}>Collar Type</Text>
@@ -167,6 +177,7 @@ const SizeModal = ({modalVisible, setModalVisible}) => {
             <TouchableOpacity
               style={[styles.saveButton]}
               onPress={() => {
+                // handleSubmit();
                 setModalVisible(!modalVisible);
                 navigation.navigate('Cart');
               }}>
@@ -238,6 +249,15 @@ const styles = StyleSheet.create({
     fontSize: hp(1.7),
     fontFamily: 'Poppins-Regular',
     color: colors.black,
+  },
+  iconstyle: {
+    width: 30,
+    height: 30,
+    marginBottom: -hp(2),
+  },
+  leftside: {
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
   },
 });
 export default SizeModal;

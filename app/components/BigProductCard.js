@@ -6,6 +6,7 @@ import {
 } from 'react-native-responsive-screen';
 import {colors} from '../config/constants';
 import {useNavigation} from '@react-navigation/native';
+import {APP_API_URL} from '@env';
 
 export default function BigProductCard({item}) {
   const navigation = useNavigation();
@@ -20,7 +21,7 @@ export default function BigProductCard({item}) {
             borderTopLeftRadius: wp(3),
             borderTopRightRadius: wp(3),
           }}
-          source={item.image}
+          source={{uri: APP_API_URL + item?.images[0]?.filename}}
         />
         <TouchableOpacity
           style={{
@@ -32,9 +33,9 @@ export default function BigProductCard({item}) {
           <Image source={require('../assets/icons/heart.png')} />
         </TouchableOpacity>
         <View style={styles.bottomContainer}>
-          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.title}>{item?.design?.name}</Text>
           <View style={styles.bottom}>
-            <Text style={styles.pirce}>Rs: {item?.price}</Text>
+            <Text style={styles.pirce}>Rs: {item?.design?.price}</Text>
           </View>
         </View>
       </View>

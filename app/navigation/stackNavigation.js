@@ -26,7 +26,7 @@ function AppStack() {
       />
       <Stack.Screen
         options={{headerShown: false}}
-        name="Home"
+        name="Tabs"
         component={MyTabs}
       />
       <Stack.Screen

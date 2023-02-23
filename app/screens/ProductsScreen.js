@@ -1,5 +1,5 @@
 import {View, Text, FlatList, SafeAreaView, StyleSheet} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import BigProductCard from '../components/BigProductCard';
 import AppHeader from '../components/AppHeader';
 import {useNavigation} from '@react-navigation/native';
@@ -8,7 +8,10 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {ScrollView} from 'react-native-gesture-handler';
+
+import {cancelPendingRequests} from '../api/axiosInstance';
+import Loader from '../components/Loader';
+import api from '../api';
 
 const products = [
   {
@@ -30,8 +33,30 @@ const products = [
     price: 2000,
   },
 ];
-export default function ProductsScreen() {
+export default function ProductsScreen({route}) {
+  const {subCategoryId} = route.params;
   const navigation = useNavigation();
+  const [products, setProducts] = useState();
+  const [loading, setLoading] = useState();
+
+  const fetchProducts = async id => {
+    try {
+      setLoading(true);
+      const response = await api.product.getProductsBySubCategoryId(id);
+      console.log(response, 'Products by SubCategoryID');
+      setProducts(response);
+
+      setLoading(false);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  useEffect(() => {
+    fetchProducts(subCategoryId);
+    return () => {
+      cancelPendingRequests();
+    };
+  }, []);
 
   return (
     <SafeAreaView>
@@ -39,14 +64,20 @@ export default function ProductsScreen() {
       <View style={styles.container}>
         <SearchBar />
 
-        <FlatList
-          style={{marginTop: hp(4)}}
-          showsVerticalScrollIndicator={false}
-          data={products}
-          renderItem={({item}) => <BigProductCard item={item} />}
-          keyExtractor={item => item.id}
-          numColumns={2}
-        />
+        {loading ? (
+          <View style={{marginTop: hp(10)}}>
+            <Loader />
+          </View>
+        ) : (
+          <FlatList
+            style={{marginTop: hp(4), marginBottom: hp(25)}}
+            showsVerticalScrollIndicator={false}
+            data={products}
+            renderItem={({item}) => <BigProductCard item={item} />}
+            keyExtractor={item => item.id}
+            numColumns={2}
+          />
+        )}
       </View>
     </SafeAreaView>
   );

@@ -160,7 +160,7 @@ export default function SignUp() {
         </SafeAreaView>
         <View style={styles.cricle2} />
         <View style={styles.littleleft}>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Tabs')}>
             <Image
               style={styles.topmargin}
               source={require('../assets/images/image2.png')}

@@ -1,30 +1,37 @@
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {colors} from '../config/constants';
+import {APP_API_URL} from '@env';
+import {useNavigation} from '@react-navigation/native';
 
 export default function ProductCard({item}) {
+  const navigation = useNavigation();
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => {
+        navigation.navigate('ProductDetails');
+      }}>
       <Image
         style={{
-          width: '100%',
           resizeMode: 'cover',
+          height: '65%',
           borderTopLeftRadius: wp(2),
           borderTopRightRadius: wp(2),
         }}
-        source={require('../assets/images/side-woman2.png')}
+        source={{uri: `${APP_API_URL}${item.images[0].filename}`}}
       />
       <View style={{padding: wp(1.5)}}>
-        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.title}>{item.design.name}</Text>
         <View style={styles.bottom}>
-          <Text style={styles.pirce}>Rs: {item.price}</Text>
+          <Text style={styles.pirce}>Rs: {item.design.price}</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({

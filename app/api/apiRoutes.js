@@ -6,5 +6,6 @@ export default {
   base: BASE_URL,
   categoryList: `${BASE_URL}categorylist`,
   subCategoryList: `${BASE_URL}subcategorylist`,
+  productList: `${BASE_URL}designlist`,
   auth: `${BASE_URL}auth`,
 };
