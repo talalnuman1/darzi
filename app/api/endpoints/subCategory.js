@@ -6,7 +6,7 @@ const getSubCategories = async () => {
   const signal = controller.signal;
 
   try {
-    const response = await axiosInstance.get('subcategorylist', {signal});
+    const response = await axiosInstance.get('subcategory', {signal});
     return response.data;
   } catch (error) {
     if (axios.isCancel(error)) {

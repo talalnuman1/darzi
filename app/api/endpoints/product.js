@@ -6,7 +6,7 @@ const getAllProducts = async () => {
   const signal = controller.signal;
 
   try {
-    const response = await axiosInstance.get('designlist', {signal});
+    const response = await axiosInstance.get('design', {signal});
     return response.data;
   } catch (error) {
     if (axios.isCancel(error)) {
