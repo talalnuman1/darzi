@@ -102,12 +102,25 @@ export default function HomeScreen() {
   const fetchSubCategory = async id => {
     try {
       setLoading(true);
-      const response = await api.subCategory.getSubCategoryById(id);
+
+      // Fetch subcategories by category id if provided, otherwise get all subcategories
+      const response = id
+        ? await api.subCategory.getSubCategoryById(id)
+        : await api.subCategory.getSubCategories();
+
       console.log(response, ' SubCategory By ID');
+
       setSubCategory(response);
+
+      // Set the first item in the array as the default selected item
       setSubCategoryItem(response[0]);
+
+      // Set the image of the selected item as the default image
       setSubCategoryImage(APP_API_URL + response[0]?.images[0]?.filename);
+
+      // Fetch products based on selected subcategory id
       fetchProducts(response[0].subcategory.id);
+
       setLoading(false);
     } catch (error) {
       console.log(error.message);
@@ -116,7 +129,9 @@ export default function HomeScreen() {
   const fetchProducts = async id => {
     try {
       setProductLoading(true);
-      const response = await api.product.getProductsBySubCategoryId(id);
+      const response = id
+        ? await api.product.getProductsBySubCategoryId(id)
+        : await api.product.getAllProducts();
       console.log(response, 'Products by SubCategoryID');
       setProducts(response);
       setProductLoading(false);
@@ -126,6 +141,7 @@ export default function HomeScreen() {
   };
 
   const onTabClick = id => {
+    cancelPendingRequests();
     setSelectedTab(id);
     fetchSubCategory(id);
     const selectedCategory = category.find(
@@ -135,6 +151,7 @@ export default function HomeScreen() {
   };
   // Tab Button to get All Sub Categories
   const onAllClick = () => {
+    cancelPendingRequests();
     setSelectedTab('All');
     fetchSubCategories();
   };
