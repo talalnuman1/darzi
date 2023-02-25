@@ -6,16 +6,19 @@ import {
   TextInput,
   SafeAreaView,
   TouchableOpacity,
+  Keyboard,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {colors} from '../config/constants';
 import {useNavigation} from '@react-navigation/native';
+import api from '../api';
 export default function Login() {
   const navigation = useNavigation();
+  const passwordInputRef = useRef(null);
   const [inputValues, setInputValues] = useState({
     email: '',
     password: '',
@@ -48,7 +51,20 @@ export default function Login() {
       });
     }
   };
+  const login = async data => {
+    try {
+      const response = await api.auth.userLogin(data);
+      console.log(response.token, 'THIS IS THE API RESPONSE');
+
+      // navigation.navigate('Tabs');
+    } catch (err) {
+      console.log(err);
+    } finally {
+      // setInputValues({email: '', password: ''});
+    }
+  };
   const handleSubmit = () => {
+    Keyboard.dismiss();
     // Check if all fields are valid
     if (
       errors.email === '' &&
@@ -58,12 +74,15 @@ export default function Login() {
     ) {
       // Submit form
       console.log('Form submitted');
-      console.log(inputValues);
-      navigation.navigate('Tabs');
+      login(inputValues);
     } else {
       console.log(errors);
       console.log('Form has errors');
     }
+  };
+
+  const handleNext = ref => {
+    ref.current.focus();
   };
   return (
     <View style={styles.container}>
@@ -95,6 +114,9 @@ export default function Login() {
               keyboardType="email-address"
               value={inputValues.email}
               onChangeText={value => handleInputChange('email', value)}
+              returnKeyType="next"
+              onSubmitEditing={() => handleNext(passwordInputRef)}
+              blurOnSubmit={false}
             />
             <View style={styles.flexrow}>
               <Text style={styles.textformtext}>Password</Text>
@@ -104,10 +126,13 @@ export default function Login() {
               />
             </View>
             <TextInput
+              ref={passwordInputRef}
               style={styles.input}
-              keyboardType="visible-password"
+              secureTextEntry
               value={inputValues.password}
               onChangeText={value => handleInputChange('password', value)}
+              returnKeyType="done"
+              onSubmitEditing={() => handleSubmit()}
             />
             <TouchableOpacity
               style={styles.btnsignup}

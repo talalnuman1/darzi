@@ -6,8 +6,12 @@ import {
   TextInput,
   SafeAreaView,
   TouchableOpacity,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -27,6 +31,16 @@ export default function SignUp() {
     password: '',
     confirmPassword: '',
   });
+  const inputRefs = {
+    username: useRef(null),
+    email: useRef(null),
+    password: useRef(null),
+    confirmPassword: useRef(null),
+  };
+
+  const handleNext = field => {
+    inputRefs[field].current?.focus();
+  };
 
   const handleInputChange = (key, value) => {
     console.log(value);
@@ -59,6 +73,7 @@ export default function SignUp() {
     }
   };
   const handleSubmit = () => {
+    Keyboard.dismiss();
     // Check if all fields are valid
     if (
       errors.email === '' &&
@@ -80,7 +95,8 @@ export default function SignUp() {
   return (
     <View style={styles.container}>
       <View style={styles.cricle} />
-      <View>
+      <ScrollView
+        style={{height: hp(60), marginTop: -hp(10), paddingTop: hp(2)}}>
         <View style={styles.left}>
           <TouchableOpacity style={styles.btnsignupblack}>
             <Text style={styles.whitetext}>Sign up</Text>
@@ -92,6 +108,9 @@ export default function SignUp() {
           </TouchableOpacity>
         </View>
         <View style={styles.talkBubbleTriangle} />
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{flex: 1}}></KeyboardAvoidingView>
         <SafeAreaView style={styles.subcontiner}>
           <View>
             <Text style={styles.textsignup}>Signup</Text>
@@ -107,6 +126,9 @@ export default function SignUp() {
               keyboardType="text"
               value={inputValues.username}
               onChangeText={value => handleInputChange('username', value)}
+              returnKeyType="next"
+              onSubmitEditing={() => handleNext('email')}
+              ref={inputRefs.username}
             />
             <View style={styles.flexrow}>
               <Text style={styles.textformtext}>Email</Text>
@@ -120,6 +142,9 @@ export default function SignUp() {
               keyboardType="email-address"
               value={inputValues.email}
               onChangeText={value => handleInputChange('email', value)}
+              returnKeyType="next"
+              onSubmitEditing={() => handleNext('password')}
+              ref={inputRefs.email}
             />
             <View style={styles.flexrow}>
               <Text style={styles.textformtext}>Password</Text>
@@ -130,9 +155,12 @@ export default function SignUp() {
             </View>
             <TextInput
               style={styles.input}
-              keyboardType="visible-password"
+              secureTextEntry
               value={inputValues.password}
               onChangeText={value => handleInputChange('password', value)}
+              returnKeyType="next"
+              onSubmitEditing={() => handleNext('confirmPassword')}
+              ref={inputRefs.password}
             />
             <View style={styles.flexrow}>
               <Text style={styles.textformtext}>Confrim Password</Text>
@@ -143,11 +171,14 @@ export default function SignUp() {
             </View>
             <TextInput
               style={styles.input}
-              keyboardType="visible-password"
+              secureTextEntry
               value={inputValues.confirmPassword}
               onChangeText={value =>
                 handleInputChange('confirmPassword', value)
               }
+              returnKeyType="done"
+              onSubmitEditing={handleSubmit}
+              ref={inputRefs.confirmPassword}
             />
             <TouchableOpacity
               style={styles.btnsignup}
@@ -158,23 +189,23 @@ export default function SignUp() {
             </TouchableOpacity>
           </View>
         </SafeAreaView>
-        <View style={styles.cricle2} />
-        <View style={styles.littleleft}>
-          <TouchableOpacity onPress={() => navigation.navigate('Tabs')}>
-            <Image
-              style={styles.topmargin}
-              source={require('../assets/images/image2.png')}
-            />
-          </TouchableOpacity>
+      </ScrollView>
+      <View style={styles.cricle2} />
+      <View style={styles.littleleft}>
+        <TouchableOpacity onPress={() => navigation.navigate('Tabs')}>
           <Image
             style={styles.topmargin}
-            source={require('../assets/images/image3.png')}
+            source={require('../assets/images/image2.png')}
           />
-          <Image
-            style={styles.topmargin}
-            source={require('../assets/images/image4.png')}
-          />
-        </View>
+        </TouchableOpacity>
+        <Image
+          style={styles.topmargin}
+          source={require('../assets/images/image3.png')}
+        />
+        <Image
+          style={styles.topmargin}
+          source={require('../assets/images/image4.png')}
+        />
       </View>
     </View>
   );
@@ -183,6 +214,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+
   cricle: {
     // position: 'absolute',
     top: 0,
@@ -217,13 +249,13 @@ const styles = StyleSheet.create({
   },
   subcontiner: {
     backgroundColor: colors.white,
-    height: hp(64),
+    // height: hp(64),
     paddingVertical: hp(4),
     paddingHorizontal: wp(2),
     borderRadius: 8,
     alignItems: 'flex-end',
     alignSelf: 'flex-end',
-    marginTop: hp(-12),
+    // marginTop: hp(-12),
     elevation: 5,
   },
   btnsignup: {
@@ -302,9 +334,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Medium',
   },
   littleleft: {
-    position: 'absolute',
-    marginTop: hp(15),
-    marginLeft: wp(5),
+    width: '20%',
+    // position: 'absolute',
+    bottom: hp(25),
+    alignItems: 'center',
+    // left: wp(5),
+    // marginTop: hp(15),
+    // marginLeft: wp(5),
   },
   topmargin: {
     marginTop: hp(3),

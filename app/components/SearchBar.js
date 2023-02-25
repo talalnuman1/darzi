@@ -1,19 +1,45 @@
-import {View, Text, StyleSheet, TextInput, Image} from 'react-native';
-import React from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
+import React, {useState} from 'react';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import {colors} from '../config/constants';
+import debounce from 'lodash.debounce';
 
-export default function SearchBar() {
+const DEBOUNCE_DELAY = 300;
+export default function SearchBar({onSearch}) {
+  const [text, setText] = useState('');
+  const [loading, setLoading] = useState();
+
+  const debouncedSearch = debounce(value => {
+    onSearch(value);
+    setLoading(false);
+  }, DEBOUNCE_DELAY);
+
+  const handleTextChange = value => {
+    setLoading(true);
+    setText(value);
+    debouncedSearch(value);
+  };
   return (
     <View>
       <View style={styles.input}>
-        <Image
-          style={styles.search}
-          source={require('../assets/icons/search.png')}
-        />
+        {loading ? (
+          <ActivityIndicator style={{marginHorizontal: wp(3.5)}} size={16} />
+        ) : (
+          <Image
+            style={styles.search}
+            source={require('../assets/icons/search.png')}
+          />
+        )}
         <View
           style={{
             width: 2,
@@ -26,6 +52,8 @@ export default function SearchBar() {
           placeholder="Search"
           placeholderTextColor={colors.darkGrey}
           style={styles.textInput}
+          value={text}
+          onChangeText={handleTextChange}
         />
       </View>
     </View>
@@ -33,8 +61,8 @@ export default function SearchBar() {
 }
 const styles = StyleSheet.create({
   search: {
-    marginHorizontal: wp(5),
-    padding: 10,
+    marginHorizontal: wp(4),
+    // padding: 10,
   },
   input: {
     flexDirection: 'row',
