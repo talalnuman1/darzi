@@ -155,6 +155,9 @@ export default function HomeScreen() {
     setSelectedTab('All');
     fetchSubCategories();
   };
+  const searchProducts = () => {
+    console.log('searchProducts');
+  };
   useEffect(() => {
     fetchCategories();
     fetchSubCategories();
@@ -177,7 +180,7 @@ export default function HomeScreen() {
         )}
       </View>
       <View style={{paddingHorizontal: wp(17)}}>
-        <SearchBar />
+        <SearchBar onSearch={searchProducts} />
       </View>
       {/* Tab Buttons */}
       {!categoryLoading && (
@@ -238,10 +241,13 @@ export default function HomeScreen() {
           </ScrollView>
           <View
             style={{
-              alignItems: 'flex-end',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
               marginTop: hp(1),
               paddingHorizontal: wp(5),
             }}>
+            <Text style={styles.heading}>Related Products</Text>
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('Products', {
@@ -329,5 +335,9 @@ const styles = StyleSheet.create({
   seeMore: {
     color: colors.darkGrey,
     fontFamily: 'Poppins-Bold',
+  },
+  heading: {
+    fontFamily: 'Poppins-SemiBold',
+    color: colors.black,
   },
 });
