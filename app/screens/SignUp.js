@@ -18,24 +18,25 @@ import {
 } from 'react-native-responsive-screen';
 import {colors} from '../config/constants';
 import {useNavigation} from '@react-navigation/native';
+import api from '../api';
 export default function SignUp() {
   const navigation = useNavigation();
   const [inputValues, setInputValues] = useState({
-    username: '',
+    name: '',
     email: '',
     password: '',
-    confirmPassword: '',
+    c_password: '',
   });
   const [errors, setErrors] = useState({
     email: '',
     password: '',
-    confirmPassword: '',
+    c_password: '',
   });
   const inputRefs = {
-    username: useRef(null),
+    name: useRef(null),
     email: useRef(null),
     password: useRef(null),
-    confirmPassword: useRef(null),
+    c_password: useRef(null),
   };
 
   const handleNext = field => {
@@ -60,16 +61,25 @@ export default function SignUp() {
           value.length >= 8
             ? ''
             : 'Password must be at least 8 characters long',
-        confirmPassword:
-          value === inputValues.confirmPassword ? '' : 'Passwords do not match',
+        c_password:
+          value === inputValues.c_password ? '' : 'Passwords do not match',
       });
-    } else if (key === 'confirmPassword') {
+    } else if (key === 'c_password') {
       // Check if passwords match
       setErrors({
         ...errors,
-        confirmPassword:
+        c_password:
           value === inputValues.password ? '' : 'Passwords do not match',
       });
+    }
+  };
+
+  const userRegister = async data => {
+    try {
+      const response = await api.auth.userRegister(data);
+      console.log(response);
+    } catch (err) {
+      console.log(err);
     }
   };
   const handleSubmit = () => {
@@ -78,13 +88,14 @@ export default function SignUp() {
     if (
       errors.email === '' &&
       errors.password === '' &&
-      errors.confirmPassword === '' &&
+      errors.c_password === '' &&
       inputValues.email.length > 0 &&
       inputValues.password.length > 0 &&
-      inputValues.confirmPassword.length > 0
+      inputValues.c_password.length > 0
     ) {
       // Submit form
       console.log(inputValues);
+      userRegister(inputValues);
       console.log('Form submitted');
     } else {
       console.log(errors);
@@ -95,27 +106,26 @@ export default function SignUp() {
   return (
     <View style={styles.container}>
       <View style={styles.cricle} />
-      <ScrollView
-        style={{height: hp(60), marginTop: -hp(10), paddingTop: hp(2)}}>
-        <View style={styles.left}>
-          <TouchableOpacity style={styles.btnsignupblack}>
-            <Text style={styles.whitetext}>Sign up</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.btnsignupwhite}
-            onPress={() => navigation.navigate('Login')}>
-            <Text style={styles.blacktext}>Login</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.left}>
+        <TouchableOpacity style={styles.btnsignupblack}>
+          <Text style={styles.whitetext}>Sign up</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.btnsignupwhite}
+          onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.blacktext}>Login</Text>
+        </TouchableOpacity>
+
         <View style={styles.talkBubbleTriangle} />
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={{flex: 1}}></KeyboardAvoidingView>
+      </View>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        {/* <ScrollView> */}
         <SafeAreaView style={styles.subcontiner}>
           <View>
             <Text style={styles.textsignup}>Signup</Text>
             <View style={styles.flexrow}>
-              <Text style={styles.textformtext}>Username</Text>
+              <Text style={styles.textformtext}>Name</Text>
               <Image
                 source={require('../assets/icons/user.png')}
                 style={styles.iconstyle}
@@ -124,11 +134,11 @@ export default function SignUp() {
             <TextInput
               style={styles.input}
               keyboardType="text"
-              value={inputValues.username}
-              onChangeText={value => handleInputChange('username', value)}
+              value={inputValues.name}
+              onChangeText={value => handleInputChange('name', value)}
               returnKeyType="next"
               onSubmitEditing={() => handleNext('email')}
-              ref={inputRefs.username}
+              ref={inputRefs.name}
             />
             <View style={styles.flexrow}>
               <Text style={styles.textformtext}>Email</Text>
@@ -159,7 +169,7 @@ export default function SignUp() {
               value={inputValues.password}
               onChangeText={value => handleInputChange('password', value)}
               returnKeyType="next"
-              onSubmitEditing={() => handleNext('confirmPassword')}
+              onSubmitEditing={() => handleNext('c_password')}
               ref={inputRefs.password}
             />
             <View style={styles.flexrow}>
@@ -172,13 +182,11 @@ export default function SignUp() {
             <TextInput
               style={styles.input}
               secureTextEntry
-              value={inputValues.confirmPassword}
-              onChangeText={value =>
-                handleInputChange('confirmPassword', value)
-              }
+              value={inputValues.c_password}
+              onChangeText={value => handleInputChange('c_password', value)}
               returnKeyType="done"
               onSubmitEditing={handleSubmit}
-              ref={inputRefs.confirmPassword}
+              ref={inputRefs.c_password}
             />
             <TouchableOpacity
               style={styles.btnsignup}
@@ -189,7 +197,8 @@ export default function SignUp() {
             </TouchableOpacity>
           </View>
         </SafeAreaView>
-      </ScrollView>
+        {/* </ScrollView> */}
+      </KeyboardAvoidingView>
       <View style={styles.cricle2} />
       <View style={styles.littleleft}>
         <TouchableOpacity onPress={() => navigation.navigate('Tabs')}>
@@ -213,11 +222,11 @@ export default function SignUp() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
   },
 
   cricle: {
-    // position: 'absolute',
-    top: 0,
+    top: hp(5),
     left: 0,
     width: 0,
     height: 0,
@@ -249,13 +258,13 @@ const styles = StyleSheet.create({
   },
   subcontiner: {
     backgroundColor: colors.white,
-    // height: hp(64),
+    height: hp(64),
     paddingVertical: hp(4),
     paddingHorizontal: wp(2),
     borderRadius: 8,
     alignItems: 'flex-end',
     alignSelf: 'flex-end',
-    // marginTop: hp(-12),
+    marginTop: hp(-5),
     elevation: 5,
   },
   btnsignup: {
@@ -299,12 +308,12 @@ const styles = StyleSheet.create({
   cricle2: {
     position: 'absolute',
     bottom: 0,
-    right: 0,
+    // right: 0,
     width: wp(100),
     height: hp(25),
     backgroundColor: colors.black,
     borderTopLeftRadius: wp(53),
-    marginBottom: hp(-17),
+    // marginBottom: hp(-17),
     zIndex: -1,
     transform: [{scaleX: 2}, {skewX: '25deg'}, {translateX: 100}],
   },
@@ -322,8 +331,9 @@ const styles = StyleSheet.create({
   },
   left: {
     position: 'absolute',
-    left: 0,
-    marginTop: hp(2),
+    zIndex: 1,
+    // left: 0,
+    top: hp(30),
   },
   whitetext: {
     color: 'rgba(255, 255, 255, 0.78)',
@@ -336,7 +346,7 @@ const styles = StyleSheet.create({
   littleleft: {
     width: '20%',
     // position: 'absolute',
-    bottom: hp(25),
+    bottom: hp(30),
     alignItems: 'center',
     // left: wp(5),
     // marginTop: hp(15),
@@ -349,7 +359,7 @@ const styles = StyleSheet.create({
   talkBubbleTriangle: {
     position: 'absolute',
     left: wp(25),
-    top: 10,
+    // top: hp(10),
     width: 0,
     height: 0,
     borderTopColor: 'transparent',

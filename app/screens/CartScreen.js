@@ -60,10 +60,7 @@ export default function CartScreen() {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <AppHeader
-        title={'Custom Size'}
-        onPressBack={() => navigation.goBack()}
-      />
+      <AppHeader title={'My Cart'} onPressBack={() => navigation.goBack()} />
       <FlatList
         style={{marginTop: hp(2), paddingHorizontal: wp(4)}}
         showsVerticalScrollIndicator={false}

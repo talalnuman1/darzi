@@ -8,7 +8,14 @@ const userLogin = async data => {
     console.log(error.message);
   }
 };
-const userRegister = data => axiosInstance.post('/register', data);
+const userRegister = async data => {
+  try {
+    const response = await axiosInstance.post('/register', data);
+    return response.data;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
 export default {
   userLogin,
