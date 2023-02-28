@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, Dimensions, Image} from 'react-native';
+import {APP_API_URL} from '@env';
 import size from '../helpers/sizes';
 export const SLIDER_WIDTH = Dimensions.get('window').width + 80;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
@@ -7,7 +8,7 @@ export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
 const CarouselCardItem = ({item, index}) => {
   return (
     <View style={styles.container} key={index}>
-      <Image source={{uri: item.imgUrl}} style={styles.image} />
+      <Image source={{uri: APP_API_URL + item}} style={styles.image} />
     </View>
   );
 };

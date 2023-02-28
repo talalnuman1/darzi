@@ -60,8 +60,28 @@ const searchProducts = async data => {
     controller.abort();
   }
 };
+const getProductById = async id => {
+  const controller = new AbortController();
+  const signal = controller.signal;
+
+  try {
+    const response = await axiosInstance.get(`detail/${id}`, {
+      signal,
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isCancel(error)) {
+      console.log('Request cancelled');
+    } else {
+      console.log(error.message);
+    }
+  } finally {
+    controller.abort();
+  }
+};
 export default {
   getAllProducts,
   getProductsBySubCategoryId,
   searchProducts,
+  getProductById,
 };

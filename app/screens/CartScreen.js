@@ -17,6 +17,7 @@ import {colors} from '../config/constants';
 import CartCompotent from '../components/Cartcompoent';
 import {useNavigation} from '@react-navigation/native';
 import AppHeader from '../components/AppHeader';
+import {useSelector} from 'react-redux';
 
 const products = [
   {
@@ -58,9 +59,15 @@ const products = [
 ];
 export default function CartScreen() {
   const navigation = useNavigation();
+  const {items} = useSelector(state => state.cart);
+
+  console.log(items);
+
   return (
     <View style={styles.container}>
       <AppHeader title={'My Cart'} onPressBack={() => navigation.goBack()} />
+      {/* {items.length <= 0 ? (
+        <> */}
       <FlatList
         style={{marginTop: hp(2), paddingHorizontal: wp(4)}}
         showsVerticalScrollIndicator={false}
@@ -68,6 +75,7 @@ export default function CartScreen() {
         renderItem={({item}) => <CartCompotent item={item} />}
         keyExtractor={item => item.id}
       />
+
       <View
         style={{
           paddingHorizontal: wp(4),
@@ -91,16 +99,44 @@ export default function CartScreen() {
         <Text style={styles.price}>PKR:3000</Text>
         <TouchableOpacity
           style={styles.addToCartBtn}
-          onPress={() => navigation.navigate('CheckOut')}>
+          onPress={() => {
+            navigation.navigate('CheckOut'), console.log('chekcout');
+          }}>
           <Text style={styles.addToCartText}>Check Out</Text>
         </TouchableOpacity>
       </View>
+      {/* </>
+      ) : (
+        <View
+          style={{
+            flex: 1,
+            zIndex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <TouchableOpacity onPress={() => console.log('first')}>
+            <Text style={[styles.addToCartText, {fontSize: hp(4)}]}>
+              No Products in cart
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Home')}
+            style={[
+              styles.addToCartBtn,
+              // {backgroundColor: colors.black},
+              // {padding: wp(4)},
+            ]}>
+            <Text style={[styles.price]}>Shop Now</Text>
+          </TouchableOpacity>
+        </View>
+      )} */}
     </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'red',
     // paddingVertical: hp(2),
   },
   flexrowtotal: {

@@ -31,7 +31,6 @@ function App(): JSX.Element {
   };
 
   return (
-
     <NavigationContainer>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}

@@ -18,16 +18,18 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import {useDispatch} from 'react-redux';
 import {colors} from '../config/constants';
 import data from '../helpers/extraDetails.json';
+import {addItem} from '../redux/cart';
 
-const ModalButton = ({id, title, onPress, btnWidth, selected = false}) => {
+const ModalButton = ({id, title, onPress, btnWidth, selected}) => {
   const buttonStyle = id =>
-    id === selected
+    id === selected.id
       ? {...styles.btn, backgroundColor: colors.black}
       : styles.btn;
   const textStyle = id =>
-    id === selected
+    id === selected.id
       ? {...styles.modalText, color: colors.white}
       : styles.modalText;
   return (
@@ -38,28 +40,13 @@ const ModalButton = ({id, title, onPress, btnWidth, selected = false}) => {
     </TouchableOpacity>
   );
 };
-const SizeModal = ({modalVisible, setModalVisible}) => {
-  const navigation = useNavigation();
-  const [collarType, setCollarType] = useState('');
-  const [frontPocket, setFrontPocket] = useState('');
-  const [sidePocket, setSidePocket] = useState('');
-  const [stichType, setStichType] = useState('');
-  const [tailType, setTailType] = useState('');
-  const [shalwarPocket, setShalwarPocket] = useState();
-
-  const handleSubmit = () => {
-    // Check if all fields are valid
-    // if (errors.name === '' && inputValues.name.length > 0) {
-    // Submit form
-    console.log('Form submitted');
-    console.log(collarType);
-    console.log(frontPocket);
-    // navigation.navigate('Home');
-    // } else {
-    // console.log(errors);
-    // console.log('Form has errors');
-    // }
-  };
+const SizeModal = ({
+  modalVisible,
+  setModalVisible,
+  formValues,
+  setFormValues,
+  handleSubmit,
+}) => {
   return (
     <View style={styles.centeredView}>
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
@@ -81,8 +68,13 @@ const SizeModal = ({modalVisible, setModalVisible}) => {
                     id={type.id}
                     btnWidth={'30%'}
                     title={type.title}
-                    selected={collarType}
-                    onPress={setCollarType}
+                    selected={formValues.collarType}
+                    onPress={value =>
+                      setFormValues({
+                        ...formValues,
+                        collarType: {id: value, title: type.title},
+                      })
+                    }
                   />
                 ))}
               </View>
@@ -95,8 +87,13 @@ const SizeModal = ({modalVisible, setModalVisible}) => {
                     id={type.id}
                     btnWidth={'30%'}
                     title={type.title}
-                    selected={frontPocket}
-                    onPress={setFrontPocket}
+                    selected={formValues.frontPocket}
+                    onPress={value =>
+                      setFormValues({
+                        ...formValues,
+                        frontPocket: {id: value, title: type.title},
+                      })
+                    }
                   />
                 ))}
               </View>
@@ -109,8 +106,13 @@ const SizeModal = ({modalVisible, setModalVisible}) => {
                     id={type.id}
                     btnWidth={'30%'}
                     title={type.title}
-                    selected={sidePocket}
-                    onPress={setSidePocket}
+                    selected={formValues.sidePocket}
+                    onPress={value =>
+                      setFormValues({
+                        ...formValues,
+                        sidePocket: {id: value, title: type.title},
+                      })
+                    }
                   />
                 ))}
               </View>
@@ -123,8 +125,13 @@ const SizeModal = ({modalVisible, setModalVisible}) => {
                     id={type.id}
                     btnWidth={'30%'}
                     title={type.title}
-                    selected={stichType}
-                    onPress={setStichType}
+                    selected={formValues.stichType}
+                    onPress={value =>
+                      setFormValues({
+                        ...formValues,
+                        stichType: {id: value, title: type.title},
+                      })
+                    }
                   />
                 ))}
               </View>
@@ -137,8 +144,13 @@ const SizeModal = ({modalVisible, setModalVisible}) => {
                     id={type.id}
                     btnWidth={'45%'}
                     title={type.title}
-                    selected={tailType}
-                    onPress={setTailType}
+                    selected={formValues.tailType}
+                    onPress={value =>
+                      setFormValues({
+                        ...formValues,
+                        tailType: {id: value, title: type.title},
+                      })
+                    }
                   />
                 ))}
               </View>
@@ -151,8 +163,10 @@ const SizeModal = ({modalVisible, setModalVisible}) => {
               <Text style={styles.modalText}>Shalwar Pocket</Text>
               <CheckBox
                 disabled={false}
-                value={shalwarPocket}
-                onValueChange={value => setShalwarPocket(value)}
+                value={formValues.shalwarPocket}
+                onValueChange={value =>
+                  setFormValues({...formValues, shalwarPocket: value})
+                }
                 tintColors={{
                   true: 'rgba(0, 0, 0, 0.7)',
                   false: 'rgba(0, 0, 0, 0.7)',
@@ -172,15 +186,14 @@ const SizeModal = ({modalVisible, setModalVisible}) => {
                   },
                   styles.modalText,
                 ]}
+                onChangeText={value =>
+                  setFormValues({...formValues, note: value})
+                }
               />
             </View>
             <TouchableOpacity
               style={[styles.saveButton]}
-              onPress={() => {
-                // handleSubmit();
-                setModalVisible(!modalVisible);
-                navigation.navigate('Cart');
-              }}>
+              onPress={handleSubmit}>
               <Text style={[styles.modalText, styles.textStyle]}>Save</Text>
             </TouchableOpacity>
           </ScrollView>
