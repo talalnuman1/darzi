@@ -59,6 +59,8 @@ export default function HomeScreen() {
   const [subCategory, setSubCategory] = useState(); // set the initial selected tab to the first one
   const [products, setProducts] = useState(); // set the initial selected tab to the first one
   const [subCategoryImage, setSubCategoryImage] = useState();
+  const [toBeSearch, setToBeSearch] = useState();
+  const [searchedProducts, setSearchedProducts] = useState();
   const [categoryImage, setCategoryImage] = useState();
   const [subCategoryItem, setSubCategoryItem] = useState();
   const [loading, setLoading] = useState(true);
@@ -82,7 +84,6 @@ export default function HomeScreen() {
       console.log(error.message);
     }
   };
-
   // Fetch All subcategories
   const fetchSubCategories = async () => {
     try {
@@ -139,7 +140,10 @@ export default function HomeScreen() {
       console.log(error.message);
     }
   };
-
+  const fetchProductsBySearch = async data => {
+    const response = await api.product.searchProducts(data);
+    setSearchedProducts(response);
+  };
   const onTabClick = id => {
     cancelPendingRequests();
     setSelectedTab(id);
@@ -155,8 +159,10 @@ export default function HomeScreen() {
     setSelectedTab('All');
     fetchSubCategories();
   };
-  const searchProducts = () => {
-    console.log('searchProducts');
+  const searchProducts = name => {
+    setToBeSearch(name);
+    fetchProductsBySearch(name);
+    console.log(name);
   };
   useEffect(() => {
     fetchCategories();
@@ -181,6 +187,51 @@ export default function HomeScreen() {
       </View>
       <View style={{paddingHorizontal: wp(17)}}>
         <SearchBar onSearch={searchProducts} />
+        {toBeSearch?.length > 0 && (
+          <FlatList
+            style={{height: hp(10)}}
+            showsVerticalScrollIndicator={false}
+            data={searchedProducts}
+            renderItem={({item}) => {
+              return (
+                <View
+                  style={{
+                    paddingHorizontal: wp(2),
+                    paddingVertical: hp(1),
+                    backgroundColor: colors.white,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                      alignItems: 'center',
+                    }}>
+                    <Image
+                      style={{height: 40, width: 40, resizeMode: 'cover'}}
+                      source={{
+                        uri: `${APP_API_URL + item?.images[0]?.filename}`,
+                      }}
+                    />
+                    <Text
+                      style={[
+                        styles.tabText,
+                        {fontSize: hp(2.2), marginLeft: wp(2)},
+                      ]}>
+                      {item.design.name}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={styles.tabText}>PKR {item.design.price}</Text>
+                  </View>
+                </View>
+              );
+            }}
+            keyExtractor={item => item.id}
+          />
+        )}
       </View>
       {/* Tab Buttons */}
       {!categoryLoading && (

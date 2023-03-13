@@ -1,4 +1,5 @@
 import axios from 'axios';
+import apiRoutes from '../apiRoutes';
 import axiosInstance from '../axiosInstance';
 
 const getSubCategories = async () => {
@@ -6,7 +7,9 @@ const getSubCategories = async () => {
   const signal = controller.signal;
 
   try {
-    const response = await axiosInstance.get('subcategory', {signal});
+    const response = await axiosInstance.get(`${apiRoutes.subCategory}`, {
+      signal,
+    });
     return response.data;
   } catch (error) {
     if (axios.isCancel(error)) {
@@ -23,7 +26,9 @@ const getSubCategoryById = async id => {
   const signal = controller.signal;
 
   try {
-    const response = await axiosInstance.get(`subcategory/${id}`, {signal});
+    const response = await axiosInstance.get(`${apiRoutes.subCategory}/${id}`, {
+      signal,
+    });
     return response.data;
   } catch (error) {
     if (axios.isCancel(error)) {

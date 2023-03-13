@@ -11,7 +11,10 @@ import {APP_API_URL} from '@env';
 export default function BigProductCard({item}) {
   const navigation = useNavigation();
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('ProductDetails')}>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate('ProductDetails', {productId: item.design.id})
+      }>
       <View style={styles.container}>
         <Image
           style={{

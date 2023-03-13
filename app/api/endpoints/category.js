@@ -1,4 +1,5 @@
 import axios from 'axios';
+import apiRoutes from '../apiRoutes';
 import axiosInstance from '../axiosInstance';
 
 const getCategories = async () => {
@@ -6,7 +7,7 @@ const getCategories = async () => {
   const signal = controller.signal;
 
   try {
-    const response = await axiosInstance.get('category', {signal});
+    const response = await axiosInstance.get(`${apiRoutes.category}`, {signal});
     return response.data;
   } catch (error) {
     if (axios.isCancel(error)) {
